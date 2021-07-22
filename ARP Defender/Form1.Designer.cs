@@ -260,6 +260,7 @@
             this.Controls.Add(this.stop);
             this.Controls.Add(this.start);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
             this.Name = "Form1";
             this.Text = "ARP Defender";
             this.tableLayoutPanel1.ResumeLayout(false);

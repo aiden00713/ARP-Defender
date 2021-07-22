@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30204.135
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ARP Defender", "ARP Defender\ARP Defender.csproj", "{BE0CC42E-D3E7-4EA6-AE5E-B320BDBFB58C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BE0CC42E-D3E7-4EA6-AE5E-B320BDBFB58C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BE0CC42E-D3E7-4EA6-AE5E-B320BDBFB58C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BE0CC42E-D3E7-4EA6-AE5E-B320BDBFB58C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BE0CC42E-D3E7-4EA6-AE5E-B320BDBFB58C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7B8BA39B-9A7D-47D7-B943-1FCE164EF684}
+	EndGlobalSection
+EndGlobal

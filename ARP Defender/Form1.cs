@@ -25,23 +25,25 @@ namespace ARP_Defender
             hostmac_label.Text = GetHostMACAddress();
             gatewayip_label.Text = GetGatewayIPAddress().ToString();
             gatewaymac_label.Text = GetGatewayMACAddress(GetGatewayIPAddress().ToString());
-            test_label.Text = GetNetworkAdapter();
+
+            //test_label.Text = GetNetworkAdapter();
+            //test_label.Text = "set neighbors" + " " + GetNetworkAdapter() + " " + GetGatewayIPAddress().ToString() + " " + GetGatewayMACAddress(GetGatewayIPAddress().ToString());
         }
 
         private void start_Click(object sender, EventArgs e)
         {
             show_label.Text = "開啟防禦";
             show_label.ForeColor = Color.Green;
-
-            CMDARPstatic();
+            String cmdstr = "set neighbors" + " " + GetNetworkAdapter() + " " + GetGatewayIPAddress().ToString() + " " + GetGatewayMACAddress(GetGatewayIPAddress().ToString());
+            CMDARPstatic(cmdstr);
         }
 
         private void stop_Click(object sender, EventArgs e)
         {
             show_label.Text = "尚未開啟防禦";
             show_label.ForeColor = Color.Red;
-
-            CMDARPdeletestatic();
+            String cmdstr = "delete neighbors" + " " + GetNetworkAdapter() + " " + GetGatewayIPAddress().ToString();
+            CMDARPdeletestatic(cmdstr);
         }
 
         public string GetHostIPAddress()
@@ -144,7 +146,7 @@ namespace ARP_Defender
             }
         }
 
-        public static void CMDARPstatic()
+        public static void CMDARPstatic(String cmdstr)
         {
             Process CmdProcess = new Process(); //建立執行CMD
             CmdProcess.StartInfo.FileName = "cmd.exe";
@@ -156,17 +158,14 @@ namespace ARP_Defender
             CmdProcess.Start(); //執行 
 
             CmdProcess.StandardInput.WriteLine("netsh -c \"interface ipv4\"");
-            CmdProcess.StandardInput.WriteLine("set neighbors \"Wi-Fi\" \"192.168.88.1\" \"08-55-31-8e-cf-ba\"");
+            CmdProcess.StandardInput.WriteLine(cmdstr);
             CmdProcess.StandardInput.WriteLine("exit");
-
-            //CmdProcess.StartInfo.Arguments = "/k " + str;
-            //CmdProcess.StartInfo.Arguments = "/c " + str2;//「/C」表示執行完命令後馬上退出  
-
+ 
             //CmdProcess.WaitForExit();//等待程式執行完退出程序   
             CmdProcess.Close(); //結束 
         }
 
-        public static void CMDARPdeletestatic()
+        public static void CMDARPdeletestatic(String cmdstr)
         {
             Process CmdProcess = new Process(); //建立執行CMD
             CmdProcess.StartInfo.FileName = "cmd.exe";
@@ -178,8 +177,9 @@ namespace ARP_Defender
             CmdProcess.Start(); //執行 
 
             CmdProcess.StandardInput.WriteLine("netsh -c \"interface ipv4\"");
-            CmdProcess.StandardInput.WriteLine("delete neighbors \"Wi-Fi\" \"192.168.88.1\"");
+            CmdProcess.StandardInput.WriteLine(cmdstr);
             CmdProcess.StandardInput.WriteLine("exit");
+            CmdProcess.Close(); //結束
         }
 
         public string GetNetworkAdapter()
@@ -192,6 +192,16 @@ namespace ARP_Defender
                     NetworkAdapter = nic.NetworkInterfaceType.ToString();
                 }
             }
+
+            if(NetworkAdapter == "Wireless80211")
+            {
+                NetworkAdapter = "Wi-Fi";
+            }
+            else if(NetworkAdapter == "Ethernet")
+            {
+                NetworkAdapter = "乙太網路"; //需要知道編號...
+            }
+
             return NetworkAdapter;
         }
     }

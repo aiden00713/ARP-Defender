@@ -254,7 +254,7 @@
             // 
             this.test_label.AutoSize = true;
             this.test_label.Font = new System.Drawing.Font("微軟正黑體", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.test_label.Location = new System.Drawing.Point(332, 496);
+            this.test_label.Location = new System.Drawing.Point(92, 499);
             this.test_label.Name = "test_label";
             this.test_label.Size = new System.Drawing.Size(96, 26);
             this.test_label.TabIndex = 6;

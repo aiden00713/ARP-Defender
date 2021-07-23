@@ -42,6 +42,7 @@
             this.label5 = new System.Windows.Forms.Label();
             this.show_label = new System.Windows.Forms.Label();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+            this.test_label = new System.Windows.Forms.Label();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.SuspendLayout();
@@ -249,12 +250,23 @@
             this.tableLayoutPanel2.Size = new System.Drawing.Size(222, 92);
             this.tableLayoutPanel2.TabIndex = 5;
             // 
+            // test_label
+            // 
+            this.test_label.AutoSize = true;
+            this.test_label.Font = new System.Drawing.Font("微軟正黑體", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.test_label.Location = new System.Drawing.Point(332, 496);
+            this.test_label.Name = "test_label";
+            this.test_label.Size = new System.Drawing.Size(96, 26);
+            this.test_label.TabIndex = 6;
+            this.test_label.Text = "測試標籤";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Info;
             this.ClientSize = new System.Drawing.Size(784, 561);
+            this.Controls.Add(this.test_label);
             this.Controls.Add(this.tableLayoutPanel2);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Controls.Add(this.stop);
@@ -268,6 +280,7 @@
             this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel2.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -287,6 +300,7 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label show_label;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
+        private System.Windows.Forms.Label test_label;
     }
 }
 

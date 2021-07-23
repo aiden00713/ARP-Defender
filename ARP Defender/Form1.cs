@@ -30,6 +30,23 @@ namespace ARP_Defender
         {
             show_label.Text = "開啟防禦";
             show_label.ForeColor = Color.Green;
+
+            String str = "netsh -c \"interface ipv4\"";
+            String str2 = "set neighbors \"Wi-Fi\" \"192.168.50.1\" \"a8-5e-45-41-24-cc\"";
+            Process CmdProcess = new Process(); //建立執行CMD
+            CmdProcess.StartInfo.FileName = "cmd.exe";
+
+            CmdProcess.StartInfo.CreateNoWindow = false;         // 不建立新視窗    
+            CmdProcess.StartInfo.UseShellExecute = false;       //不啟用shell啟動程序  
+            
+
+            CmdProcess.StartInfo.Arguments = "/k" + str;// /c表執行為退出 /k表執行完不退出
+            //Thread.Sleep(1000);
+            CmdProcess.StartInfo.Arguments = "/k" + str2;
+            CmdProcess.Start();//執行 
+
+            CmdProcess.WaitForExit();//等待程式執行完退出程序   
+            CmdProcess.Close();//結束 
         }
 
         private void stop_Click(object sender, EventArgs e)

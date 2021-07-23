@@ -98,7 +98,7 @@ namespace ARP_Defender
         public static IPAddress GetGatewayIPAddress(IPAddress netaddr = null)
         {
             // user can provide an ip address that exists on the network they want to connect to, 
-            // or this routine will default to 1.1.1.1 (IP of a popular internet dns provider)
+            // or this routine will default to 8.8.8.8 (IP of a popular internet dns provider)
             if (netaddr is null)
             {
                 netaddr = IPAddress.Parse("8.8.8.8");

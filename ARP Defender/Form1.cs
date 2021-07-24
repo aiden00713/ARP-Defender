@@ -116,7 +116,7 @@ namespace ARP_Defender
 
         public string GetGatewayMACAddress(string GatewayIP)
         {
-            string dirResults = "";
+            string dirResults = string.Empty;
             ProcessStartInfo psi = new ProcessStartInfo();
             Process proc = new Process();
             psi.FileName = "arp";

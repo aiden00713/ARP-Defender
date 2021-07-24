@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.start = new System.Windows.Forms.Button();
             this.stop = new System.Windows.Forms.Button();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
@@ -256,9 +257,9 @@
             this.test_label.Font = new System.Drawing.Font("微軟正黑體", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.test_label.Location = new System.Drawing.Point(92, 499);
             this.test_label.Name = "test_label";
-            this.test_label.Size = new System.Drawing.Size(96, 26);
+            this.test_label.Size = new System.Drawing.Size(243, 26);
             this.test_label.TabIndex = 6;
-            this.test_label.Text = "測試標籤";
+            this.test_label.Text = "輸出測試標籤，之後移除";
             // 
             // Form1
             // 
@@ -272,6 +273,7 @@
             this.Controls.Add(this.stop);
             this.Controls.Add(this.start);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "Form1";
             this.Text = "ARP Defender";

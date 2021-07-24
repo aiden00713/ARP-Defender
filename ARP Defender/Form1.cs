@@ -32,7 +32,7 @@ namespace ARP_Defender
             show_label.ForeColor = Color.Green;
 
             String str = "netsh -c \"interface ipv4\"";
-            String str2 = "set neighbors \"Wi-Fi\" \"192.168.50.1\" \"a8-5e-45-41-24-cc\"";
+            String str2 = "set neighbors \"Wi-Fi\" \"192.168.50.1\" \"a8-5e-45-4e-24-cc\"";
             Process CmdProcess = new Process(); //建立執行CMD
             CmdProcess.StartInfo.FileName = "cmd.exe";
             CmdProcess.StartInfo.CreateNoWindow = true;         // 不建立新視窗    
@@ -42,7 +42,7 @@ namespace ARP_Defender
             CmdProcess.StartInfo.RedirectStandardError = true;
             CmdProcess.Start();//執行 
             CmdProcess.StandardInput.WriteLine("netsh -c \"interface ipv4\"");
-            CmdProcess.StandardInput.WriteLine("set neighbors \"Wi-Fi\" \"192.168.50.1\" \"a8-5e-45-41-24-cc\"");
+            CmdProcess.StandardInput.WriteLine("set neighbors \"Wi-Fi\" \"192.168.50.1\" \"a8-5e-45-4e-24-cc\"");
             CmdProcess.StandardInput.WriteLine("exit");
            // CmdProcess.StartInfo.Arguments = "/k " + str;
            // CmdProcess.StartInfo.Arguments = "/c " + str2;//「/C」表示執行完命令後馬上退出  

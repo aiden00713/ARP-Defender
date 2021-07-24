@@ -26,15 +26,15 @@ namespace ARP_Defender
             gatewayip_label.Text = GetGatewayIPAddress().ToString();
             gatewaymac_label.Text = GetGatewayMACAddress(GetGatewayIPAddress().ToString());
 
-            //test_label.Text = GetNetworkAdapter();
-            //test_label.Text = "set neighbors" + " " + GetNetworkAdapter() + " " + GetGatewayIPAddress().ToString() + " " + GetGatewayMACAddress(GetGatewayIPAddress().ToString());
+            //test_label.Text = GetNetworkAdapterName();
+            //test_label.Text = "set neighbors" + " " + GetNetworkAdapterName() + " " + GetGatewayIPAddress().ToString() + " " + GetGatewayMACAddress(GetGatewayIPAddress().ToString());
         }
 
         private void start_Click(object sender, EventArgs e)
         {
             show_label.Text = "開啟防禦";
             show_label.ForeColor = Color.Green;
-            String cmdstr = "set neighbors" + " " + GetNetworkAdapter() + " " + GetGatewayIPAddress().ToString() + " " + GetGatewayMACAddress(GetGatewayIPAddress().ToString());
+            String cmdstr = "set neighbors" + " " + GetNetworkAdapterName() + " " + GetGatewayIPAddress().ToString() + " " + GetGatewayMACAddress(GetGatewayIPAddress().ToString());
             CMDARPstatic(cmdstr);
         }
 
@@ -42,7 +42,7 @@ namespace ARP_Defender
         {
             show_label.Text = "尚未開啟防禦";
             show_label.ForeColor = Color.Red;
-            String cmdstr = "delete neighbors" + " " + GetNetworkAdapter() + " " + GetGatewayIPAddress().ToString();
+            String cmdstr = "delete neighbors" + " " + GetNetworkAdapterName() + " " + GetGatewayIPAddress().ToString();
             CMDARPdeletestatic(cmdstr);
         }
 
@@ -182,27 +182,17 @@ namespace ARP_Defender
             CmdProcess.Close(); //結束
         }
 
-        public string GetNetworkAdapter()
+        public string GetNetworkAdapterName()
         {
-            string NetworkAdapter = string.Empty;
+            string NetworkAdapterName = string.Empty;
             foreach (NetworkInterface nic in NetworkInterface.GetAllNetworkInterfaces())
             {
                 if (nic.OperationalStatus == OperationalStatus.Up && nic.NetworkInterfaceType != NetworkInterfaceType.Loopback)
                 {
-                    NetworkAdapter = nic.NetworkInterfaceType.ToString();
+                    NetworkAdapterName = nic.Name.ToString();
                 }
             }
-
-            if(NetworkAdapter == "Wireless80211")
-            {
-                NetworkAdapter = "Wi-Fi";
-            }
-            else if(NetworkAdapter == "Ethernet")
-            {
-                NetworkAdapter = "乙太網路"; //需要知道編號...
-            }
-
-            return NetworkAdapter;
+            return NetworkAdapterName;
         }
     }
 }

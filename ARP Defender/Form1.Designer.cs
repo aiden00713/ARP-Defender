@@ -64,6 +64,7 @@
             // stop
             // 
             this.stop.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
+            this.stop.Enabled = false;
             this.stop.Font = new System.Drawing.Font("微軟正黑體", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.stop.ForeColor = System.Drawing.Color.White;
             this.stop.Location = new System.Drawing.Point(450, 50);

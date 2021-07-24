@@ -34,6 +34,8 @@ namespace ARP_Defender
         {
             show_label.Text = "開啟防禦";
             show_label.ForeColor = Color.Green;
+            start.Enabled = false;
+            stop.Enabled = true;
             String cmdstr = "set neighbors" + " " + GetNetworkAdapterName() + " " + GetGatewayIPAddress().ToString() + " " + GetGatewayMACAddress(GetGatewayIPAddress().ToString());
             CMDARPstatic(cmdstr);
         }
@@ -42,6 +44,8 @@ namespace ARP_Defender
         {
             show_label.Text = "尚未開啟防禦";
             show_label.ForeColor = Color.Red;
+            start.Enabled = true;
+            stop.Enabled = false;
             String cmdstr = "delete neighbors" + " " + GetNetworkAdapterName() + " " + GetGatewayIPAddress().ToString();
             CMDARPdeletestatic(cmdstr);
         }

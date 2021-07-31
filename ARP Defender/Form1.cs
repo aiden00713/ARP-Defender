@@ -12,7 +12,10 @@ using System.Net.Sockets;
 using System.Net.NetworkInformation;
 using System.Text.RegularExpressions;
 using System.Diagnostics;
-using System.IO;
+using SharpPcap;
+using SharpPcap.LibPcap;
+using PacketDotNet;
+
 
 namespace ARP_Defender
 {
@@ -30,6 +33,8 @@ namespace ARP_Defender
             //test_label.Text = "set neighbors" + " " + GetNetworkAdapterName() + " " + GetGatewayIPAddress().ToString() + " " + GetGatewayMACAddress(GetGatewayIPAddress().ToString());
         }
 
+        Timer myTimer = new Timer();
+        int Count = 0;
         private void start_Click(object sender, EventArgs e)
         {
             show_label.Text = "開啟防禦";
@@ -38,6 +43,11 @@ namespace ARP_Defender
             stop.Enabled = true;
             String cmdstr = "set neighbors" + " " + GetNetworkAdapterName() + " " + GetGatewayIPAddress().ToString() + " " + GetGatewayMACAddress(GetGatewayIPAddress().ToString());
             CMDARPstatic(cmdstr);
+
+            Count = 0;
+            myTimer.Tick += new EventHandler(SendPacket);
+            myTimer.Enabled = true;
+            myTimer.Interval = 500; //豪秒為單位
         }
 
         private void stop_Click(object sender, EventArgs e)
@@ -48,6 +58,8 @@ namespace ARP_Defender
             stop.Enabled = false;
             String cmdstr = "delete neighbors" + " " + GetNetworkAdapterName() + " " + GetGatewayIPAddress().ToString();
             CMDARPdeletestatic(cmdstr);
+
+            myTimer.Stop();
         }
 
         public string GetHostIPAddress()
@@ -66,7 +78,6 @@ namespace ARP_Defender
             Dictionary<string, long> macAddresses = new Dictionary<string, long>();
             foreach (NetworkInterface nic in NetworkInterface.GetAllNetworkInterfaces())
             {
-                
                 if (nic.OperationalStatus == OperationalStatus.Up)
                 {
                     macAddresses[nic.GetPhysicalAddress().ToString()] = nic.GetIPStatistics().BytesSent + nic.GetIPStatistics().BytesReceived;
@@ -96,7 +107,7 @@ namespace ARP_Defender
             {
                 netaddr = IPAddress.Parse("8.8.8.8");
             }
-                
+            
             PingReply reply = default;
             var ping = new Ping();
             var options = new PingOptions(1, true); // ttl=1, dont fragment=true
@@ -197,6 +208,41 @@ namespace ARP_Defender
                 }
             }
             return NetworkAdapterName;
+        }
+
+        private EthernetPacket Send_ARPResponse_Packet()
+        {
+            string strEthDestMAC = GetGatewayMACAddress(GetGatewayIPAddress().ToString());
+            string strEhSourMac = GetHostMACAddress();
+
+            string strARPSourIP = GetHostIPAddress();
+            string strARPSourMac = GetHostMACAddress();
+
+            string strARPDestIP = GetGatewayIPAddress().ToString();
+            string strARPDestMac = GetGatewayMACAddress(GetGatewayIPAddress().ToString());
+            //有問題
+            ArpPacket arp = new ArpPacket(ArpOperation.Response, PhysicalAddress.Parse(strARPDestMac), IPAddress.Parse(strARPDestIP), PhysicalAddress.Parse(strARPSourMac), IPAddress.Parse(strARPSourIP));
+            EthernetPacket eth = new EthernetPacket(PhysicalAddress.Parse(strEhSourMac), PhysicalAddress.Parse(strEthDestMAC), EthernetType.Arp);
+            eth.PayloadPacket = arp;
+
+            return eth;
+        }
+
+        private void SendPacket(object sender, EventArgs e)
+        {
+            //尚未解決
+            var devices = CaptureDeviceList.Instance;
+            int i = 0;
+            foreach (var dev in devices)
+            {
+                i++;
+            }
+            test_label.Text = devices[1].Name;
+            var device = devices[0];
+            device.Open();
+            EthernetPacket eth = Send_ARPResponse_Packet();
+            device.SendPacket(eth);
+            Count++;
         }
     }
 }

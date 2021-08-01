@@ -29,7 +29,7 @@ namespace ARP_Defender
             gatewayip_label.Text = GetGatewayIPAddress().ToString();
             gatewaymac_label.Text = GetGatewayMACAddress(GetGatewayIPAddress().ToString());
 
-            //test_label.Text = GetNetworkAdapterName();
+            //test_label.Text = ;
             //test_label.Text = "set neighbors" + " " + GetNetworkAdapterName() + " " + GetGatewayIPAddress().ToString() + " " + GetGatewayMACAddress(GetGatewayIPAddress().ToString());
         }
 
@@ -210,7 +210,7 @@ namespace ARP_Defender
             return NetworkAdapterName;
         }
 
-        private EthernetPacket Send_ARPResponse_Packet()
+        public EthernetPacket Send_ARPResponse_Packet()
         {
             string strEthDestMAC = GetGatewayMACAddress(GetGatewayIPAddress().ToString());
             string strEhSourMac = GetHostMACAddress();
@@ -228,21 +228,40 @@ namespace ARP_Defender
             return eth;
         }
 
-        private void SendPacket(object sender, EventArgs e)
+        public void SendPacket(object sender, EventArgs e)
         {
             //尚未解決
             var devices = CaptureDeviceList.Instance;
             int i = 0;
             foreach (var dev in devices)
             {
-                i++;
+                //dev.Open();
+                //need to new a object? 
+                if (MacFormat(dev.MacAddress.ToString()) == GetHostMACAddress())
+                {
+                    break;
+                }
+                else
+                {
+                    i++;
+                }
+                //dev.Close();
             }
-            test_label.Text = devices[1].Name;
-            var device = devices[0];
+            //test_label.Text = devices[1].Name;
+            var device = devices[i];
             device.Open();
             EthernetPacket eth = Send_ARPResponse_Packet();
             device.SendPacket(eth);
             Count++;
+        }
+
+        public string MacFormat(string MacAddress)
+        {
+            for (int i = 10; i > 0; i = i - 2)
+            {
+                MacAddress = MacAddress.Insert(i, "-");
+            }
+            return MacAddress;
         }
     }
 }

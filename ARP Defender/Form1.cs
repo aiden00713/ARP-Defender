@@ -159,6 +159,7 @@ namespace ARP_Defender
             {
                 return "找不到預設閘道 MAC 位址";
             }
+            //要把小寫改成大寫
         }
 
         public static void CMDARPstatic(String cmdstr)
@@ -220,7 +221,7 @@ namespace ARP_Defender
 
             string strARPDestIP = GetGatewayIPAddress().ToString();
             string strARPDestMac = GetGatewayMACAddress(GetGatewayIPAddress().ToString());
-            //有問題
+            //有問題-指定的實體位址無效
             ArpPacket arp = new ArpPacket(ArpOperation.Response, PhysicalAddress.Parse(strARPDestMac), IPAddress.Parse(strARPDestIP), PhysicalAddress.Parse(strARPSourMac), IPAddress.Parse(strARPSourIP));
             EthernetPacket eth = new EthernetPacket(PhysicalAddress.Parse(strEhSourMac), PhysicalAddress.Parse(strEthDestMAC), EthernetType.Arp);
             eth.PayloadPacket = arp;
@@ -230,14 +231,13 @@ namespace ARP_Defender
 
         public void SendPacket(object sender, EventArgs e)
         {
-            //尚未解決
             var devices = CaptureDeviceList.Instance;
             int i = 0;
             foreach (var dev in devices)
             {
-                //dev.Open();
-                //need to new a object? 
-                if (MacFormat(dev.MacAddress.ToString()) == GetHostMACAddress())
+                dev.Open();
+                //if無法判斷
+                if (dev.MacAddress == PhysicalAddress.Parse(MacFormat(GetHostMACAddress())))
                 {
                     break;
                 }
@@ -245,22 +245,27 @@ namespace ARP_Defender
                 {
                     i++;
                 }
-                //dev.Close();
+                dev.Close();
             }
-            //test_label.Text = devices[1].Name;
-            var device = devices[i];
-            device.Open();
-            EthernetPacket eth = Send_ARPResponse_Packet();
-            device.SendPacket(eth);
-            Count++;
+            test_label.Text = MacFormat(GetHostMACAddress());
+            //test_label.Text = i.ToString();
+            //var device = devices[i];
+            //var device = devices[3];
+            //device.Open();
+            //EthernetPacket eth = Send_ARPResponse_Packet();
+            //device.SendPacket(eth);
+            //Count++;
         }
 
         public string MacFormat(string MacAddress)
         {
+            /*
             for (int i = 10; i > 0; i = i - 2)
             {
                 MacAddress = MacAddress.Insert(i, "-");
             }
+            */
+            MacAddress = MacAddress.Replace("-", "");
             return MacAddress;
         }
     }

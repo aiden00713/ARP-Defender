@@ -48,7 +48,7 @@ namespace ARP_Defender
             Count = 0;
             myTimer.Tick += new EventHandler(SendPacket);
             myTimer.Enabled = true;
-            myTimer.Interval = 500; //豪秒為單位
+            myTimer.Interval = 20000; //豪秒為單位，先20秒執行一次
         }
 
         private void stop_Click(object sender, EventArgs e)

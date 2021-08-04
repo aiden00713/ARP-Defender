@@ -153,13 +153,13 @@ namespace ARP_Defender
 
             if (m.ToString() != "")
             {
-                return m.ToString();
+                return MACAddress_Upper(m.ToString());
             }
             else
             {
                 return "找不到預設閘道 MAC 位址";
             }
-            //要把小寫改成大寫
+            
         }
 
         public static void CMDARPstatic(String cmdstr)
@@ -267,6 +267,34 @@ namespace ARP_Defender
             */
             MacAddress = MacAddress.Replace("-", "");
             return MacAddress;
+        }
+
+        public string MACAddress_Upper(string MACAddress)
+        {
+
+            string English = "ABCDEF";
+            string english = "abcdef";
+
+            string a = MACAddress;
+            string b = string.Empty;
+            for (int i = 0; i < a.Length; i++)
+            {
+                if (a[i] >= 'a' && a[i] <= 'f')
+                {
+                    for (int j = 0; j < 6; j++)
+                    {
+                        if (a[i] == english[j])
+                        {
+                            b += English[j];
+                        }
+                    }
+                }
+                else
+                {
+                    b += a[i];
+                }
+            }
+            return b;
         }
     }
 }

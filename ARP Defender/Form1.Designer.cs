@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.start = new System.Windows.Forms.Button();
             this.stop = new System.Windows.Forms.Button();
@@ -44,6 +45,7 @@
             this.show_label = new System.Windows.Forms.Label();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.test_label = new System.Windows.Forms.Label();
+            this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.SuspendLayout();
@@ -262,6 +264,14 @@
             this.test_label.TabIndex = 6;
             this.test_label.Text = "輸出測試標籤，之後移除";
             // 
+            // notifyIcon1
+            // 
+            this.notifyIcon1.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon1.Icon")));
+            this.notifyIcon1.Text = "ARP Defender";
+            this.notifyIcon1.Visible = true;
+            this.notifyIcon1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.notifyIcon1_MouseClick);
+            this.notifyIcon1.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.notifyIcon1_MouseDoubleClick);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -278,6 +288,7 @@
             this.MaximizeBox = false;
             this.Name = "Form1";
             this.Text = "ARP Defender";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             this.tableLayoutPanel2.ResumeLayout(false);
@@ -304,6 +315,7 @@
         private System.Windows.Forms.Label show_label;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.Label test_label;
+        private System.Windows.Forms.NotifyIcon notifyIcon1;
     }
 }
 

@@ -33,6 +33,31 @@ namespace ARP_Defender
             //test_label.Text = "set neighbors" + " " + GetNetworkAdapterName() + " " + GetGatewayIPAddress().ToString() + " " + GetGatewayMACAddress(GetGatewayIPAddress().ToString());
         }
 
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            e.Cancel = true;
+            notifyIcon1.Visible = true;
+            this.Hide();
+        }
+
+        //若不要開啟 form，這個 event 可以不用寫
+        private void notifyIcon1_MouseDoubleClick(object sender, EventArgs e)
+        { 
+            this.Show();
+            this.WindowState = FormWindowState.Normal;
+        }
+
+        private void notifyIcon1_MouseClick(object sender, MouseEventArgs e)
+        {
+            this.Show();
+            this.WindowState = FormWindowState.Normal;
+        }
+
         Timer myTimer = new Timer();
         int Count = 0;
 

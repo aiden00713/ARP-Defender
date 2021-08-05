@@ -38,6 +38,10 @@ namespace ARP_Defender
             
         }
 
+        /// <summary>
+        /// Toolbar
+        /// </summary>
+        
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
             e.Cancel = true;
@@ -45,7 +49,6 @@ namespace ARP_Defender
             this.Hide();
         }
 
-        //若不要開啟 form，這個 event 可以不用寫
         private void notifyIcon1_MouseDoubleClick(object sender, EventArgs e)
         { 
             this.Show();
@@ -54,9 +57,25 @@ namespace ARP_Defender
 
         private void notifyIcon1_MouseClick(object sender, MouseEventArgs e)
         {
+            notifyIcon1.ContextMenuStrip = contextMenuStrip1;
+        }
+
+        private void 結束程式ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            String cmdstr = "delete neighbors" + " " + GetNetworkAdapterName() + " " + GetGatewayIPAddress().ToString();
+            CMDARPdeletestatic(cmdstr);
+            Environment.Exit(0); //徹底結束程式
+        }
+
+        private void 開啟程式ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
             this.Show();
             this.WindowState = FormWindowState.Normal;
         }
+
+        /// <summary>
+        /// Main code
+        /// </summary>
 
         Timer myTimer = new Timer();
         int Count = 0;

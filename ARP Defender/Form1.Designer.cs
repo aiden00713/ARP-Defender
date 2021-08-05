@@ -46,8 +46,13 @@
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.test_label = new System.Windows.Forms.Label();
             this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.開啟程式ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.結束程式ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.關於ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
+            this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // start
@@ -272,6 +277,35 @@
             this.notifyIcon1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.notifyIcon1_MouseClick);
             this.notifyIcon1.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.notifyIcon1_MouseDoubleClick);
             // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.開啟程式ToolStripMenuItem,
+            this.結束程式ToolStripMenuItem,
+            this.關於ToolStripMenuItem});
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(181, 92);
+            // 
+            // 開啟程式ToolStripMenuItem
+            // 
+            this.開啟程式ToolStripMenuItem.Name = "開啟程式ToolStripMenuItem";
+            this.開啟程式ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.開啟程式ToolStripMenuItem.Text = "開啟程式";
+            this.開啟程式ToolStripMenuItem.Click += new System.EventHandler(this.開啟程式ToolStripMenuItem_Click);
+            // 
+            // 結束程式ToolStripMenuItem
+            // 
+            this.結束程式ToolStripMenuItem.Name = "結束程式ToolStripMenuItem";
+            this.結束程式ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.結束程式ToolStripMenuItem.Text = "結束程式";
+            this.結束程式ToolStripMenuItem.Click += new System.EventHandler(this.結束程式ToolStripMenuItem_Click);
+            // 
+            // 關於ToolStripMenuItem
+            // 
+            this.關於ToolStripMenuItem.Name = "關於ToolStripMenuItem";
+            this.關於ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.關於ToolStripMenuItem.Text = "關於";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -293,6 +327,7 @@
             this.tableLayoutPanel1.PerformLayout();
             this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel2.PerformLayout();
+            this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -316,6 +351,10 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.Label test_label;
         private System.Windows.Forms.NotifyIcon notifyIcon1;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem 結束程式ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem 關於ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem 開啟程式ToolStripMenuItem;
     }
 }
 

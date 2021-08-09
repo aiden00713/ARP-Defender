@@ -62,7 +62,7 @@
             this.start.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
             this.start.Font = new System.Drawing.Font("微軟正黑體", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.start.ForeColor = System.Drawing.Color.White;
-            this.start.Location = new System.Drawing.Point(150, 35);
+            this.start.Location = new System.Drawing.Point(89, 69);
             this.start.Name = "start";
             this.start.Size = new System.Drawing.Size(165, 70);
             this.start.TabIndex = 0;
@@ -76,7 +76,7 @@
             this.stop.Enabled = false;
             this.stop.Font = new System.Drawing.Font("微軟正黑體", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.stop.ForeColor = System.Drawing.Color.White;
-            this.stop.Location = new System.Drawing.Point(450, 35);
+            this.stop.Location = new System.Drawing.Point(89, 145);
             this.stop.Name = "stop";
             this.stop.Size = new System.Drawing.Size(165, 70);
             this.stop.TabIndex = 1;
@@ -253,7 +253,7 @@
             this.tableLayoutPanel2.Controls.Add(this.label5, 0, 0);
             this.tableLayoutPanel2.Controls.Add(this.show_label, 0, 1);
             this.tableLayoutPanel2.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(271, 123);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(271, 96);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 2;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
@@ -265,7 +265,7 @@
             // 
             this.test_label.AutoSize = true;
             this.test_label.Font = new System.Drawing.Font("微軟正黑體", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.test_label.Location = new System.Drawing.Point(372, 496);
+            this.test_label.Location = new System.Drawing.Point(432, 477);
             this.test_label.Name = "test_label";
             this.test_label.Size = new System.Drawing.Size(243, 26);
             this.test_label.TabIndex = 6;
@@ -313,7 +313,7 @@
             this.whocutme.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
             this.whocutme.Font = new System.Drawing.Font("微軟正黑體", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.whocutme.ForeColor = System.Drawing.Color.White;
-            this.whocutme.Location = new System.Drawing.Point(150, 474);
+            this.whocutme.Location = new System.Drawing.Point(510, 107);
             this.whocutme.Name = "whocutme";
             this.whocutme.Size = new System.Drawing.Size(165, 70);
             this.whocutme.TabIndex = 7;

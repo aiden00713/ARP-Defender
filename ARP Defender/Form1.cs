@@ -21,6 +21,8 @@ namespace ARP_Defender
 {
     public partial class Form1 : Form
     {
+        Timer myTimer = new Timer();
+        int Count = 0;
         public Form1()
         {
             InitializeComponent(); //初始化組件
@@ -29,6 +31,17 @@ namespace ARP_Defender
             gatewayip_label.Text = GetGatewayIPAddress().ToString();
             gatewaymac_label.Text = GetGatewayMACAddress(GetGatewayIPAddress().ToString());
 
+            show_label.Text = "開啟防禦";
+            show_label.ForeColor = Color.Green;
+            start.Enabled = false;
+            stop.Enabled = true;
+            String cmdstr = "set neighbors" + " " + GetNetworkAdapterName() + " " + GetGatewayIPAddress().ToString() + " " + GetGatewayMACAddress(GetGatewayIPAddress().ToString());
+            CMDARPstatic(cmdstr);
+
+            Count = 0;
+            myTimer.Tick += new EventHandler(SendPacket);
+            myTimer.Enabled = true;
+            myTimer.Interval = 20000; //豪秒為單位，先20秒執行一次
             //test_label.Text = ;
             //test_label.Text = "set neighbors" + " " + GetNetworkAdapterName() + " " + GetGatewayIPAddress().ToString() + " " + GetGatewayMACAddress(GetGatewayIPAddress().ToString());
         }
@@ -76,9 +89,6 @@ namespace ARP_Defender
         /// <summary>
         /// Main code
         /// </summary>
-
-        Timer myTimer = new Timer();
-        int Count = 0;
 
         private void start_Click(object sender, EventArgs e)
         {
@@ -163,12 +173,14 @@ namespace ARP_Defender
             }
             catch (PingException)
             {
-                System.Diagnostics.Debug.WriteLine("找不到預設閘道 IP 位址");
+                //System.Diagnostics.Debug.WriteLine("找不到預設閘道 IP 位址");
+                MessageBox.Show("找不到預設閘道 IP 位址，可能設備沒有連上網際網路，請確認後再開啟本程式。", "錯誤");
                 return default;
             }
             if (reply.Status != IPStatus.TtlExpired)
             {
-                System.Diagnostics.Debug.WriteLine("找不到預設閘道 IP 位址");
+                //System.Diagnostics.Debug.WriteLine("找不到預設閘道 IP 位址");
+                MessageBox.Show("找不到預設閘道 IP 位址，可能設備沒有連上網際網路，請確認後再開啟本程式。", "錯誤");
                 return default;
             }
             return reply.Address;
@@ -202,9 +214,9 @@ namespace ARP_Defender
             }
             else
             {
+                MessageBox.Show("找不到預設閘道 MAC 位址，ARP紀錄表查無該筆紀錄，請確認後再開啟本程式。", "錯誤");
                 return "找不到預設閘道 MAC 位址";
             }
-            
         }
 
         public static void CMDARPstatic(String cmdstr)
@@ -270,7 +282,6 @@ namespace ARP_Defender
             ArpPacket arp = new ArpPacket(ArpOperation.Response, PhysicalAddress.Parse(strARPDestMac), IPAddress.Parse(strARPDestIP), PhysicalAddress.Parse(strARPSourMac), IPAddress.Parse(strARPSourIP));
             EthernetPacket eth = new EthernetPacket(PhysicalAddress.Parse(strEhSourMac), PhysicalAddress.Parse(strEthDestMAC), EthernetType.Arp);
             eth.PayloadPacket = arp;
-
             return eth;
         }
 
@@ -337,6 +348,12 @@ namespace ARP_Defender
                 }
             }
             return b;
+        }
+
+        private void whocutme_Click(object sender, EventArgs e)
+        {
+            Form2 form2 = new Form2(); //創建子視窗
+            form2.Show();
         }
     }
 }

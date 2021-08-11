@@ -12,12 +12,17 @@ using System.Net.Sockets;
 using System.Net.NetworkInformation;
 using System.Text.RegularExpressions;
 using System.Diagnostics;
-using System.IO;
+using SharpPcap;
+using SharpPcap.LibPcap;
+using PacketDotNet;
+
 
 namespace ARP_Defender
 {
     public partial class Form1 : Form
     {
+        Timer myTimer = new Timer();
+        int Count = 0;
         public Form1()
         {
             InitializeComponent(); //初始化組件
@@ -26,9 +31,64 @@ namespace ARP_Defender
             gatewayip_label.Text = GetGatewayIPAddress().ToString();
             gatewaymac_label.Text = GetGatewayMACAddress(GetGatewayIPAddress().ToString());
 
-            //test_label.Text = GetNetworkAdapterName();
+            show_label.Text = "開啟防禦";
+            show_label.ForeColor = Color.Green;
+            start.Enabled = false;
+            stop.Enabled = true;
+            String cmdstr = "set neighbors" + " " + GetNetworkAdapterName() + " " + GetGatewayIPAddress().ToString() + " " + GetGatewayMACAddress(GetGatewayIPAddress().ToString());
+            CMDARPstatic(cmdstr);
+
+            Count = 0;
+            myTimer.Tick += new EventHandler(SendPacket);
+            myTimer.Enabled = true;
+            myTimer.Interval = 20000; //豪秒為單位，先20秒執行一次
+            //test_label.Text = ;
             //test_label.Text = "set neighbors" + " " + GetNetworkAdapterName() + " " + GetGatewayIPAddress().ToString() + " " + GetGatewayMACAddress(GetGatewayIPAddress().ToString());
         }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            
+        }
+
+        /// <summary>
+        /// Toolbar
+        /// </summary>
+        
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            e.Cancel = true;
+            notifyIcon1.Visible = true;
+            this.Hide();
+        }
+
+        private void notifyIcon1_MouseDoubleClick(object sender, EventArgs e)
+        { 
+            this.Show();
+            this.WindowState = FormWindowState.Normal;
+        }
+
+        private void notifyIcon1_MouseClick(object sender, MouseEventArgs e)
+        {
+            notifyIcon1.ContextMenuStrip = contextMenuStrip1;
+        }
+
+        private void 結束程式ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            String cmdstr = "delete neighbors" + " " + GetNetworkAdapterName() + " " + GetGatewayIPAddress().ToString();
+            CMDARPdeletestatic(cmdstr);
+            Environment.Exit(0); //徹底結束程式
+        }
+
+        private void 開啟程式ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.Show();
+            this.WindowState = FormWindowState.Normal;
+        }
+
+        /// <summary>
+        /// Main code
+        /// </summary>
 
         private void start_Click(object sender, EventArgs e)
         {
@@ -38,6 +98,11 @@ namespace ARP_Defender
             stop.Enabled = true;
             String cmdstr = "set neighbors" + " " + GetNetworkAdapterName() + " " + GetGatewayIPAddress().ToString() + " " + GetGatewayMACAddress(GetGatewayIPAddress().ToString());
             CMDARPstatic(cmdstr);
+
+            Count = 0;
+            myTimer.Tick += new EventHandler(SendPacket);
+            myTimer.Enabled = true;
+            myTimer.Interval = 20000; //豪秒為單位，先20秒執行一次
         }
 
         private void stop_Click(object sender, EventArgs e)
@@ -48,6 +113,8 @@ namespace ARP_Defender
             stop.Enabled = false;
             String cmdstr = "delete neighbors" + " " + GetNetworkAdapterName() + " " + GetGatewayIPAddress().ToString();
             CMDARPdeletestatic(cmdstr);
+
+            myTimer.Stop();
         }
 
         public string GetHostIPAddress()
@@ -66,7 +133,6 @@ namespace ARP_Defender
             Dictionary<string, long> macAddresses = new Dictionary<string, long>();
             foreach (NetworkInterface nic in NetworkInterface.GetAllNetworkInterfaces())
             {
-                
                 if (nic.OperationalStatus == OperationalStatus.Up)
                 {
                     macAddresses[nic.GetPhysicalAddress().ToString()] = nic.GetIPStatistics().BytesSent + nic.GetIPStatistics().BytesReceived;
@@ -96,7 +162,7 @@ namespace ARP_Defender
             {
                 netaddr = IPAddress.Parse("8.8.8.8");
             }
-                
+            
             PingReply reply = default;
             var ping = new Ping();
             var options = new PingOptions(1, true); // ttl=1, dont fragment=true
@@ -107,12 +173,14 @@ namespace ARP_Defender
             }
             catch (PingException)
             {
-                System.Diagnostics.Debug.WriteLine("找不到預設閘道 IP 位址");
+                //System.Diagnostics.Debug.WriteLine("找不到預設閘道 IP 位址");
+                MessageBox.Show("找不到預設閘道 IP 位址，可能設備沒有連上網際網路，請確認後再開啟本程式。", "錯誤");
                 return default;
             }
             if (reply.Status != IPStatus.TtlExpired)
             {
-                System.Diagnostics.Debug.WriteLine("找不到預設閘道 IP 位址");
+                //System.Diagnostics.Debug.WriteLine("找不到預設閘道 IP 位址");
+                MessageBox.Show("找不到預設閘道 IP 位址，可能設備沒有連上網際網路，請確認後再開啟本程式。", "錯誤");
                 return default;
             }
             return reply.Address;
@@ -142,10 +210,11 @@ namespace ARP_Defender
 
             if (m.ToString() != "")
             {
-                return m.ToString();
+                return MACAddress_Upper(m.ToString());
             }
             else
             {
+                MessageBox.Show("找不到預設閘道 MAC 位址，ARP紀錄表查無該筆紀錄，請確認後再開啟本程式。", "錯誤");
                 return "找不到預設閘道 MAC 位址";
             }
         }
@@ -197,6 +266,94 @@ namespace ARP_Defender
                 }
             }
             return NetworkAdapterName;
+        }
+
+        public EthernetPacket Send_ARPResponse_Packet()
+        {
+            string strEthDestMAC = GetGatewayMACAddress(GetGatewayIPAddress().ToString());
+            string strEhSourMac = GetHostMACAddress();
+
+            string strARPSourIP = GetHostIPAddress();
+            string strARPSourMac = GetHostMACAddress();
+
+            string strARPDestIP = GetGatewayIPAddress().ToString();
+            string strARPDestMac = GetGatewayMACAddress(GetGatewayIPAddress().ToString());
+
+            ArpPacket arp = new ArpPacket(ArpOperation.Response, PhysicalAddress.Parse(strARPDestMac), IPAddress.Parse(strARPDestIP), PhysicalAddress.Parse(strARPSourMac), IPAddress.Parse(strARPSourIP));
+            EthernetPacket eth = new EthernetPacket(PhysicalAddress.Parse(strEhSourMac), PhysicalAddress.Parse(strEthDestMAC), EthernetType.Arp);
+            eth.PayloadPacket = arp;
+            return eth;
+        }
+
+        public void SendPacket(object sender, EventArgs e)
+        {
+            var devices = LibPcapLiveDeviceList.Instance;
+            int i = 0;
+            foreach (var dev in devices)
+            {
+                if (dev.Interface.FriendlyName == GetNetworkAdapterName())
+                {
+                    break;
+                }
+                else
+                {
+                    i++;
+                }
+            }
+
+            //test_label.Text = devices[i].Interface.FriendlyName;
+            var device = devices[i];
+            device.Open();
+            EthernetPacket eth = Send_ARPResponse_Packet();
+            device.SendPacket(eth);
+            Count++;
+        }
+
+        //沒用到
+        public string MacFormat(string MacAddress)
+        {
+            
+            for (int i = 10; i > 0; i = i - 2)
+            {
+                MacAddress = MacAddress.Insert(i, "-");
+            }
+            
+            //MacAddress = MacAddress.Replace("-", "");
+            return MacAddress;
+        }
+
+        public string MACAddress_Upper(string MACAddress)
+        {
+
+            string English = "ABCDEF";
+            string english = "abcdef";
+
+            string a = MACAddress;
+            string b = string.Empty;
+            for (int i = 0; i < a.Length; i++)
+            {
+                if (a[i] >= 'a' && a[i] <= 'f')
+                {
+                    for (int j = 0; j < 6; j++)
+                    {
+                        if (a[i] == english[j])
+                        {
+                            b += English[j];
+                        }
+                    }
+                }
+                else
+                {
+                    b += a[i];
+                }
+            }
+            return b;
+        }
+
+        private void whocutme_Click(object sender, EventArgs e)
+        {
+            Form2 form2 = new Form2(); //創建子視窗
+            form2.Show();
         }
     }
 }

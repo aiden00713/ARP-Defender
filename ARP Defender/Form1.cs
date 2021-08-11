@@ -12,6 +12,7 @@ using System.Net.Sockets;
 using System.Net.NetworkInformation;
 using System.Text.RegularExpressions;
 using System.Diagnostics;
+using System.IO;
 
 namespace ARP_Defender
 {
@@ -24,37 +25,29 @@ namespace ARP_Defender
             hostmac_label.Text = GetHostMACAddress();
             gatewayip_label.Text = GetGatewayIPAddress().ToString();
             gatewaymac_label.Text = GetGatewayMACAddress(GetGatewayIPAddress().ToString());
+
+            //test_label.Text = GetNetworkAdapterName();
+            //test_label.Text = "set neighbors" + " " + GetNetworkAdapterName() + " " + GetGatewayIPAddress().ToString() + " " + GetGatewayMACAddress(GetGatewayIPAddress().ToString());
         }
 
         private void start_Click(object sender, EventArgs e)
         {
             show_label.Text = "開啟防禦";
             show_label.ForeColor = Color.Green;
-
-            String str = "netsh -c \"interface ipv4\"";
-            String str2 = "set neighbors \"Wi-Fi\" \"192.168.50.1\" \"a8-5e-45-4e-24-cc\"";
-            Process CmdProcess = new Process(); //建立執行CMD
-            CmdProcess.StartInfo.FileName = "cmd.exe";
-            CmdProcess.StartInfo.CreateNoWindow = true;         // 不建立新視窗    
-            CmdProcess.StartInfo.UseShellExecute = false;       //不啟用shell啟動程序  
-            CmdProcess.StartInfo.RedirectStandardInput = true;
-            CmdProcess.StartInfo.RedirectStandardOutput = true;
-            CmdProcess.StartInfo.RedirectStandardError = true;
-            CmdProcess.Start();//執行 
-            CmdProcess.StandardInput.WriteLine("netsh -c \"interface ipv4\"");
-            CmdProcess.StandardInput.WriteLine("set neighbors \"Wi-Fi\" \"192.168.50.1\" \"a8-5e-45-4e-24-cc\"");
-            CmdProcess.StandardInput.WriteLine("exit");
-           // CmdProcess.StartInfo.Arguments = "/k " + str;
-           // CmdProcess.StartInfo.Arguments = "/c " + str2;//「/C」表示執行完命令後馬上退出  
-
-            //CmdProcess.WaitForExit();//等待程式執行完退出程序   
-            CmdProcess.Close();//結束 
+            start.Enabled = false;
+            stop.Enabled = true;
+            String cmdstr = "set neighbors" + " " + GetNetworkAdapterName() + " " + GetGatewayIPAddress().ToString() + " " + GetGatewayMACAddress(GetGatewayIPAddress().ToString());
+            CMDARPstatic(cmdstr);
         }
 
         private void stop_Click(object sender, EventArgs e)
         {
             show_label.Text = "尚未開啟防禦";
             show_label.ForeColor = Color.Red;
+            start.Enabled = true;
+            stop.Enabled = false;
+            String cmdstr = "delete neighbors" + " " + GetNetworkAdapterName() + " " + GetGatewayIPAddress().ToString();
+            CMDARPdeletestatic(cmdstr);
         }
 
         public string GetHostIPAddress()
@@ -114,12 +107,12 @@ namespace ARP_Defender
             }
             catch (PingException)
             {
-                System.Diagnostics.Debug.WriteLine("Gateway not available");
+                System.Diagnostics.Debug.WriteLine("找不到預設閘道 IP 位址");
                 return default;
             }
             if (reply.Status != IPStatus.TtlExpired)
             {
-                System.Diagnostics.Debug.WriteLine("Gateway not available");
+                System.Diagnostics.Debug.WriteLine("找不到預設閘道 IP 位址");
                 return default;
             }
             return reply.Address;
@@ -127,7 +120,7 @@ namespace ARP_Defender
 
         public string GetGatewayMACAddress(string GatewayIP)
         {
-            string dirResults = "";
+            string dirResults = string.Empty;
             ProcessStartInfo psi = new ProcessStartInfo();
             Process proc = new Process();
             psi.FileName = "arp";
@@ -153,10 +146,57 @@ namespace ARP_Defender
             }
             else
             {
-                return "找不到GatewayMACAddress";
+                return "找不到預設閘道 MAC 位址";
             }
         }
 
+        public static void CMDARPstatic(String cmdstr)
+        {
+            Process CmdProcess = new Process(); //建立執行CMD
+            CmdProcess.StartInfo.FileName = "cmd.exe";
+            CmdProcess.StartInfo.CreateNoWindow = true;         //不建立新視窗    
+            CmdProcess.StartInfo.UseShellExecute = false;       //不使用shell啟動  
+            CmdProcess.StartInfo.RedirectStandardInput = true;  
+            CmdProcess.StartInfo.RedirectStandardOutput = true;
+            CmdProcess.StartInfo.RedirectStandardError = true;
+            CmdProcess.Start(); //執行 
 
+            CmdProcess.StandardInput.WriteLine("netsh -c \"interface ipv4\"");
+            CmdProcess.StandardInput.WriteLine(cmdstr);
+            CmdProcess.StandardInput.WriteLine("exit");
+ 
+            //CmdProcess.WaitForExit();//等待程式執行完退出程序   
+            CmdProcess.Close(); //結束 
+        }
+
+        public static void CMDARPdeletestatic(String cmdstr)
+        {
+            Process CmdProcess = new Process(); //建立執行CMD
+            CmdProcess.StartInfo.FileName = "cmd.exe";
+            CmdProcess.StartInfo.CreateNoWindow = true;         //不建立新視窗    
+            CmdProcess.StartInfo.UseShellExecute = false;       //不使用shell啟動  
+            CmdProcess.StartInfo.RedirectStandardInput = true;
+            CmdProcess.StartInfo.RedirectStandardOutput = true;
+            CmdProcess.StartInfo.RedirectStandardError = true;
+            CmdProcess.Start(); //執行 
+
+            CmdProcess.StandardInput.WriteLine("netsh -c \"interface ipv4\"");
+            CmdProcess.StandardInput.WriteLine(cmdstr);
+            CmdProcess.StandardInput.WriteLine("exit");
+            CmdProcess.Close(); //結束
+        }
+
+        public string GetNetworkAdapterName()
+        {
+            string NetworkAdapterName = string.Empty;
+            foreach (NetworkInterface nic in NetworkInterface.GetAllNetworkInterfaces())
+            {
+                if (nic.OperationalStatus == OperationalStatus.Up && nic.NetworkInterfaceType != NetworkInterfaceType.Loopback)
+                {
+                    NetworkAdapterName = nic.Name.ToString();
+                }
+            }
+            return NetworkAdapterName;
+        }
     }
 }

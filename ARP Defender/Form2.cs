@@ -23,7 +23,10 @@ namespace ARP_Defender
         public Form2()
         {
             InitializeComponent();
+        }
 
+        private void Form2_Load(object sender, EventArgs e)
+        {
             var devices = LibPcapLiveDeviceList.Instance;
             int i = 0;
             foreach (var dev in devices)
@@ -40,7 +43,7 @@ namespace ARP_Defender
 
             var device = devices[i];
             device.Open();
-            device.Filter = "ARP"; //過濾ARP封包
+            //device.Filter = "arp"; //過濾ARP封包
             /* 當條件的封包被被截取時，執行 device_OnPacketArrival */
             device.OnPacketArrival += new PacketArrivalEventHandler(device_OnPacketArrival);
             device.Capture();
@@ -98,28 +101,36 @@ namespace ARP_Defender
 
         private void device_OnPacketArrival(object sender, PacketCapture e)
         {
-            var rawPacket = e.GetPacket();
-            var packet = Packet.ParsePacket(rawPacket.LinkLayerType, rawPacket.Data);
-
-            var ARPPacket = packet.Extract<ArpPacket>();
-            if (ARPPacket != null)
+            try
             {
-                var Packet = (ArpPacket)ARPPacket.ParentPacket;
-                if(Packet.Operation == ArpOperation.Request) //只收集請求封包
+                var rawPacket = e.GetPacket();
+                var packet = Packet.ParsePacket(rawPacket.LinkLayerType, rawPacket.Data); //封裝
+                var arpPacket = packet.Extract<ArpPacket>(); //ARP封包
+
+                if (arpPacket != null)
                 {
-                    IPAddress SenderIP = Packet.SenderProtocolAddress;
-                    PhysicalAddress SenderMAC = Packet.SenderHardwareAddress;
+                    //var Packet = (ArpPacket)arpPacket.;
 
-                    if (SenderIP == IPAddress.Parse(GetHostIPAddress()) && SenderMAC != PhysicalAddress.Parse(GetHostMACAddress()))
+                    test_label.Text = arpPacket.Operation.ToString();
+
+                    /*if (Packet.Operation.ToString() == "01") //只收集請求封包
                     {
-                        //attackip.Text = 
-                    }
+                        //PhysicalAddress Eth_SenderMAC = 
+                        IPAddress SenderIP = Packet.SenderProtocolAddress;
+                        PhysicalAddress SenderMAC = Packet.SenderHardwareAddress;
+
+                        if (SenderIP == IPAddress.Parse(GetHostIPAddress()) && SenderMAC != PhysicalAddress.Parse(GetHostMACAddress()))
+                        {
+                            attackmac.Text = SenderMAC.ToString();
+                        }
+                    }*/
                 }
-                
-
-
             }
-
+            catch(Exception)
+            {
+                MessageBox.Show("Error", "Error");
+            }
+        }
 
 
     }

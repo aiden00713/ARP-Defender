@@ -38,7 +38,8 @@
             this.attackip = new System.Windows.Forms.Label();
             this.attackbutton = new System.Windows.Forms.Button();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.test_label = new System.Windows.Forms.Label();
+            this.test_label2 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
             this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -156,15 +157,25 @@
             this.contextMenuStrip1.Name = "contextMenuStrip1";
             this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
             // 
-            // test_label
+            // test_label2
             // 
-            this.test_label.AutoSize = true;
-            this.test_label.Font = new System.Drawing.Font("微軟正黑體", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.test_label.Location = new System.Drawing.Point(113, 132);
-            this.test_label.Name = "test_label";
-            this.test_label.Size = new System.Drawing.Size(86, 24);
-            this.test_label.TabIndex = 1;
-            this.test_label.Text = "測試標籤";
+            this.test_label2.AutoSize = true;
+            this.test_label2.Font = new System.Drawing.Font("微軟正黑體", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.test_label2.Location = new System.Drawing.Point(113, 132);
+            this.test_label2.Name = "test_label2";
+            this.test_label2.Size = new System.Drawing.Size(86, 24);
+            this.test_label2.TabIndex = 1;
+            this.test_label2.Text = "測試標籤";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("微軟正黑體", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label4.Location = new System.Drawing.Point(525, 132);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(86, 24);
+            this.label4.TabIndex = 2;
+            this.label4.Text = "測試標籤";
             // 
             // Form2
             // 
@@ -172,11 +183,13 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Info;
             this.ClientSize = new System.Drawing.Size(784, 161);
-            this.Controls.Add(this.test_label);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.test_label2);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form2";
             this.Text = "誰剪我？";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form2_FormClosing);
             this.Load += new System.EventHandler(this.Form2_Load);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
@@ -195,6 +208,7 @@
         private System.Windows.Forms.Label attackmac;
         private System.Windows.Forms.Label attackip;
         private System.Windows.Forms.Button attackbutton;
-        private System.Windows.Forms.Label test_label;
+        private System.Windows.Forms.Label test_label2;
+        private System.Windows.Forms.Label label4;
     }
 }

@@ -59,7 +59,7 @@ namespace ARP_Defender
                     }
 
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     MessageBox.Show("無法設置開機自動啟動本應用程式。", "錯誤");
                 }

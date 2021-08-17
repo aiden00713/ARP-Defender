@@ -20,9 +20,13 @@ namespace ARP_Defender
 {
     public partial class Form2 : Form
     {
+        String attack_ip = string.Empty;
+        String attack_mac = string.Empty;
+        String testlable = string.Empty;
         public Form2()
         {
             InitializeComponent();
+            label4.Text = GetHostMACAddress();
         }
 
         private void Form2_Load(object sender, EventArgs e)
@@ -46,7 +50,7 @@ namespace ARP_Defender
             //device.Filter = "arp"; //過濾ARP封包
             /* 當條件的封包被被截取時，執行 device_OnPacketArrival */
             device.OnPacketArrival += new PacketArrivalEventHandler(device_OnPacketArrival);
-            device.Capture();
+            device.StartCapture();
         }
 
         public string GetNetworkAdapterName()
@@ -93,10 +97,7 @@ namespace ARP_Defender
                     maxValue = pair.Value;
                 }
             }
-            var regex = "(.{2})(.{2})(.{2})(.{2})(.{2})(.{2})";
-            var replace = "$1-$2-$3-$4-$5-$6";
-            var mac_newformat = Regex.Replace(mac, regex, replace);
-            return mac_newformat.ToString();
+            return mac.ToString();
         }
 
         private void device_OnPacketArrival(object sender, PacketCapture e)
@@ -109,29 +110,116 @@ namespace ARP_Defender
 
                 if (arpPacket != null)
                 {
-                    //var Packet = (ArpPacket)arpPacket.;
+                    //跨執行緒介面顯示處理
+                    MethodInvoker mi = new MethodInvoker(this.UpdateUI);
+                    this.BeginInvoke(mi, null);
 
-                    test_label.Text = arpPacket.Operation.ToString();
+                    //attack_ip = arpPacket.SenderProtocolAddress.ToString();
+                    //attack_mac = arpPacket.SenderHardwareAddress.ToString();
+                    //testlable = arpPacket.Operation.ToString();
 
-                    /*if (Packet.Operation.ToString() == "01") //只收集請求封包
+                    if (arpPacket.Operation.ToString() == "Request") //只收集請求封包
                     {
-                        //PhysicalAddress Eth_SenderMAC = 
-                        IPAddress SenderIP = Packet.SenderProtocolAddress;
-                        PhysicalAddress SenderMAC = Packet.SenderHardwareAddress;
-
-                        if (SenderIP == IPAddress.Parse(GetHostIPAddress()) && SenderMAC != PhysicalAddress.Parse(GetHostMACAddress()))
+                        if (arpPacket.SenderProtocolAddress.ToString() == GetHostIPAddress())
                         {
-                            attackmac.Text = SenderMAC.ToString();
+                            if (arpPacket.SenderHardwareAddress.ToString() != GetHostMACAddress())
+                            {
+                                //do what...
+                            }
                         }
-                    }*/
+                    }
                 }
             }
-            catch(Exception)
+            catch(Exception exce)
             {
-                MessageBox.Show("Error", "Error");
+                MessageBox.Show(exce.ToString(), "Error");
             }
         }
 
+        private void Form2_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            var devices = LibPcapLiveDeviceList.Instance;
+            int i = 0;
+            foreach (var dev in devices)
+            {
+                if (dev.Interface.FriendlyName == GetNetworkAdapterName())
+                {
+                    break;
+                }
+                else
+                {
+                    i++;
+                }
+            }
 
+            var device = devices[i];
+            device.Close();
+            device.StopCapture();
+
+            this.Dispose();
+            this.Close();
+        }
+        private void UpdateUI()
+        {
+            test_label2.Text = testlable;
+            attackip.Text = attack_ip;
+            attackmac.Text = attack_mac;
+        }
+
+        public string GetGatewayMACAddress(string GatewayIP)
+        {
+            string dirResults = string.Empty;
+            ProcessStartInfo psi = new ProcessStartInfo();
+            Process proc = new Process();
+            psi.FileName = "arp";
+            psi.RedirectStandardInput = false;
+            psi.RedirectStandardOutput = true;
+            psi.Arguments = "-a " + GatewayIP;
+            psi.UseShellExecute = false;
+            psi.CreateNoWindow = true;
+            try
+            {
+                proc = Process.Start(psi);
+                dirResults = proc.StandardOutput.ReadToEnd();
+                proc.WaitForExit();
+            }
+            catch (Exception)
+            { }
+
+            Match m = Regex.Match(dirResults, "\\w+\\-\\w+\\-\\w+\\-\\w+\\-\\w+\\-\\w\\w");
+
+            if (m.ToString() != "")
+            {
+                return MACAddress_Upper(m.ToString());
+            }
+        }
+
+        public string MACAddress_Upper(string MACAddress)
+        {
+
+            string English = "ABCDEF";
+            string english = "abcdef";
+
+            string a = MACAddress;
+            string b = string.Empty;
+            for (int i = 0; i < a.Length; i++)
+            {
+                if (a[i] >= 'a' && a[i] <= 'f')
+                {
+                    for (int j = 0; j < 6; j++)
+                    {
+                        if (a[i] == english[j])
+                        {
+                            b += English[j];
+                        }
+                    }
+                }
+                else
+                {
+                    b += a[i];
+                }
+            }
+            return b;
+        }
     }
 }

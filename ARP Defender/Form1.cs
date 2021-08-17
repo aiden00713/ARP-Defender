@@ -355,5 +355,20 @@ namespace ARP_Defender
             Form2 form2 = new Form2(); //創建子視窗
             form2.Show();
         }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void Form1_Load_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void hostip_label_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

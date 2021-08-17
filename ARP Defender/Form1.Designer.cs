@@ -62,9 +62,10 @@
             this.start.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
             this.start.Font = new System.Drawing.Font("微軟正黑體", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.start.ForeColor = System.Drawing.Color.White;
-            this.start.Location = new System.Drawing.Point(89, 69);
+            this.start.Location = new System.Drawing.Point(119, 86);
+            this.start.Margin = new System.Windows.Forms.Padding(4);
             this.start.Name = "start";
-            this.start.Size = new System.Drawing.Size(165, 70);
+            this.start.Size = new System.Drawing.Size(220, 88);
             this.start.TabIndex = 0;
             this.start.Text = "開始";
             this.start.UseVisualStyleBackColor = false;
@@ -76,9 +77,10 @@
             this.stop.Enabled = false;
             this.stop.Font = new System.Drawing.Font("微軟正黑體", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.stop.ForeColor = System.Drawing.Color.White;
-            this.stop.Location = new System.Drawing.Point(89, 145);
+            this.stop.Location = new System.Drawing.Point(119, 181);
+            this.stop.Margin = new System.Windows.Forms.Padding(4);
             this.stop.Name = "stop";
-            this.stop.Size = new System.Drawing.Size(165, 70);
+            this.stop.Size = new System.Drawing.Size(220, 88);
             this.stop.TabIndex = 1;
             this.stop.Text = "停止";
             this.stop.UseVisualStyleBackColor = false;
@@ -89,6 +91,7 @@
             this.tableLayoutPanel1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.tableLayoutPanel1.BackColor = System.Drawing.Color.Transparent;
             this.tableLayoutPanel1.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
             this.tableLayoutPanel1.ColumnCount = 2;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 29.73485F));
@@ -102,14 +105,15 @@
             this.tableLayoutPanel1.Controls.Add(this.label3, 0, 2);
             this.tableLayoutPanel1.Controls.Add(this.hostip_label, 1, 0);
             this.tableLayoutPanel1.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(89, 235);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(119, 294);
+            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(4);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 4;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(586, 208);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(781, 260);
             this.tableLayoutPanel1.TabIndex = 2;
             // 
             // gatewaymac_label
@@ -118,9 +122,11 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.gatewaymac_label.AutoSize = true;
-            this.gatewaymac_label.Location = new System.Drawing.Point(178, 154);
+            this.gatewaymac_label.BackColor = System.Drawing.Color.Transparent;
+            this.gatewaymac_label.Location = new System.Drawing.Point(237, 193);
+            this.gatewaymac_label.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.gatewaymac_label.Name = "gatewaymac_label";
-            this.gatewaymac_label.Size = new System.Drawing.Size(404, 53);
+            this.gatewaymac_label.Size = new System.Drawing.Size(539, 66);
             this.gatewaymac_label.TabIndex = 7;
             this.gatewaymac_label.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
@@ -130,9 +136,11 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.gatewayip_label.AutoSize = true;
-            this.gatewayip_label.Location = new System.Drawing.Point(178, 103);
+            this.gatewayip_label.BackColor = System.Drawing.Color.Transparent;
+            this.gatewayip_label.Location = new System.Drawing.Point(237, 129);
+            this.gatewayip_label.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.gatewayip_label.Name = "gatewayip_label";
-            this.gatewayip_label.Size = new System.Drawing.Size(404, 50);
+            this.gatewayip_label.Size = new System.Drawing.Size(539, 63);
             this.gatewayip_label.TabIndex = 6;
             this.gatewayip_label.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
@@ -142,9 +150,11 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.hostmac_label.AutoSize = true;
-            this.hostmac_label.Location = new System.Drawing.Point(178, 52);
+            this.hostmac_label.BackColor = System.Drawing.Color.Transparent;
+            this.hostmac_label.Location = new System.Drawing.Point(237, 65);
+            this.hostmac_label.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.hostmac_label.Name = "hostmac_label";
-            this.hostmac_label.Size = new System.Drawing.Size(404, 50);
+            this.hostmac_label.Size = new System.Drawing.Size(539, 63);
             this.hostmac_label.TabIndex = 5;
             this.hostmac_label.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
@@ -154,9 +164,11 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(4, 154);
+            this.label4.BackColor = System.Drawing.Color.Transparent;
+            this.label4.Location = new System.Drawing.Point(5, 193);
+            this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(167, 53);
+            this.label4.Size = new System.Drawing.Size(223, 66);
             this.label4.TabIndex = 3;
             this.label4.Text = "預設閘道 MAC 位址";
             this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -167,12 +179,15 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(4, 1);
+            this.label1.BackColor = System.Drawing.Color.Transparent;
+            this.label1.Location = new System.Drawing.Point(5, 1);
+            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(167, 50);
+            this.label1.Size = new System.Drawing.Size(223, 63);
             this.label1.TabIndex = 0;
             this.label1.Text = "主機 IP 位址";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
             // label2
             // 
@@ -180,9 +195,11 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(4, 52);
+            this.label2.BackColor = System.Drawing.Color.Transparent;
+            this.label2.Location = new System.Drawing.Point(5, 65);
+            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(167, 50);
+            this.label2.Size = new System.Drawing.Size(223, 63);
             this.label2.TabIndex = 1;
             this.label2.Text = "主機 MAC 位址";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -193,9 +210,11 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(4, 103);
+            this.label3.BackColor = System.Drawing.Color.Transparent;
+            this.label3.Location = new System.Drawing.Point(5, 129);
+            this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(167, 50);
+            this.label3.Size = new System.Drawing.Size(223, 63);
             this.label3.TabIndex = 2;
             this.label3.Text = "預設閘道 IP 位址";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -206,11 +225,14 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.hostip_label.AutoSize = true;
-            this.hostip_label.Location = new System.Drawing.Point(178, 1);
+            this.hostip_label.BackColor = System.Drawing.Color.Transparent;
+            this.hostip_label.Location = new System.Drawing.Point(237, 1);
+            this.hostip_label.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.hostip_label.Name = "hostip_label";
-            this.hostip_label.Size = new System.Drawing.Size(404, 50);
+            this.hostip_label.Size = new System.Drawing.Size(539, 63);
             this.hostip_label.TabIndex = 4;
             this.hostip_label.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.hostip_label.Click += new System.EventHandler(this.hostip_label_Click);
             // 
             // label5
             // 
@@ -218,10 +240,12 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label5.AutoSize = true;
+            this.label5.BackColor = System.Drawing.Color.Transparent;
             this.label5.Font = new System.Drawing.Font("微軟正黑體", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label5.Location = new System.Drawing.Point(6, 3);
+            this.label5.Location = new System.Drawing.Point(7, 3);
+            this.label5.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(210, 41);
+            this.label5.Size = new System.Drawing.Size(282, 53);
             this.label5.TabIndex = 3;
             this.label5.Text = "目前防禦狀態";
             this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -232,11 +256,13 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.show_label.AutoSize = true;
+            this.show_label.BackColor = System.Drawing.Color.Transparent;
             this.show_label.Font = new System.Drawing.Font("微軟正黑體", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.show_label.ForeColor = System.Drawing.Color.Red;
-            this.show_label.Location = new System.Drawing.Point(6, 47);
+            this.show_label.Location = new System.Drawing.Point(7, 59);
+            this.show_label.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.show_label.Name = "show_label";
-            this.show_label.Size = new System.Drawing.Size(210, 42);
+            this.show_label.Size = new System.Drawing.Size(282, 53);
             this.show_label.TabIndex = 4;
             this.show_label.Text = "尚未開啟防禦";
             this.show_label.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -246,6 +272,7 @@
             this.tableLayoutPanel2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.tableLayoutPanel2.BackColor = System.Drawing.Color.Transparent;
             this.tableLayoutPanel2.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.OutsetPartial;
             this.tableLayoutPanel2.ColumnCount = 1;
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
@@ -253,21 +280,24 @@
             this.tableLayoutPanel2.Controls.Add(this.label5, 0, 0);
             this.tableLayoutPanel2.Controls.Add(this.show_label, 0, 1);
             this.tableLayoutPanel2.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(271, 96);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(361, 120);
+            this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(4);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 2;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(222, 92);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(296, 115);
             this.tableLayoutPanel2.TabIndex = 5;
             // 
             // test_label
             // 
             this.test_label.AutoSize = true;
+            this.test_label.BackColor = System.Drawing.Color.Transparent;
             this.test_label.Font = new System.Drawing.Font("微軟正黑體", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.test_label.Location = new System.Drawing.Point(432, 477);
+            this.test_label.Location = new System.Drawing.Point(576, 596);
+            this.test_label.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.test_label.Name = "test_label";
-            this.test_label.Size = new System.Drawing.Size(243, 26);
+            this.test_label.Size = new System.Drawing.Size(312, 35);
             this.test_label.TabIndex = 6;
             this.test_label.Text = "輸出測試標籤，之後移除";
             // 
@@ -281,31 +311,32 @@
             // 
             // contextMenuStrip1
             // 
+            this.contextMenuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.開啟程式ToolStripMenuItem,
             this.結束程式ToolStripMenuItem,
             this.關於ToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(123, 70);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(139, 76);
             // 
             // 開啟程式ToolStripMenuItem
             // 
             this.開啟程式ToolStripMenuItem.Name = "開啟程式ToolStripMenuItem";
-            this.開啟程式ToolStripMenuItem.Size = new System.Drawing.Size(122, 22);
+            this.開啟程式ToolStripMenuItem.Size = new System.Drawing.Size(138, 24);
             this.開啟程式ToolStripMenuItem.Text = "開啟程式";
             this.開啟程式ToolStripMenuItem.Click += new System.EventHandler(this.開啟程式ToolStripMenuItem_Click);
             // 
             // 結束程式ToolStripMenuItem
             // 
             this.結束程式ToolStripMenuItem.Name = "結束程式ToolStripMenuItem";
-            this.結束程式ToolStripMenuItem.Size = new System.Drawing.Size(122, 22);
+            this.結束程式ToolStripMenuItem.Size = new System.Drawing.Size(138, 24);
             this.結束程式ToolStripMenuItem.Text = "結束程式";
             this.結束程式ToolStripMenuItem.Click += new System.EventHandler(this.結束程式ToolStripMenuItem_Click);
             // 
             // 關於ToolStripMenuItem
             // 
             this.關於ToolStripMenuItem.Name = "關於ToolStripMenuItem";
-            this.關於ToolStripMenuItem.Size = new System.Drawing.Size(122, 22);
+            this.關於ToolStripMenuItem.Size = new System.Drawing.Size(138, 24);
             this.關於ToolStripMenuItem.Text = "關於";
             // 
             // whocutme
@@ -313,9 +344,10 @@
             this.whocutme.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
             this.whocutme.Font = new System.Drawing.Font("微軟正黑體", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.whocutme.ForeColor = System.Drawing.Color.White;
-            this.whocutme.Location = new System.Drawing.Point(510, 107);
+            this.whocutme.Location = new System.Drawing.Point(680, 134);
+            this.whocutme.Margin = new System.Windows.Forms.Padding(4);
             this.whocutme.Name = "whocutme";
-            this.whocutme.Size = new System.Drawing.Size(165, 70);
+            this.whocutme.Size = new System.Drawing.Size(220, 88);
             this.whocutme.TabIndex = 7;
             this.whocutme.Text = "誰剪我？";
             this.whocutme.UseVisualStyleBackColor = false;
@@ -323,10 +355,12 @@
             // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.SystemColors.Info;
-            this.ClientSize = new System.Drawing.Size(784, 561);
+            this.BackColor = System.Drawing.SystemColors.Window;
+            this.BackgroundImage = global::ARP_Defender.Properties.Resources.backgriund;
+            this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.ClientSize = new System.Drawing.Size(1045, 701);
             this.Controls.Add(this.whocutme);
             this.Controls.Add(this.test_label);
             this.Controls.Add(this.tableLayoutPanel2);
@@ -335,10 +369,12 @@
             this.Controls.Add(this.start);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.MaximizeBox = false;
             this.Name = "Form1";
             this.Text = "ARP Defender";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
+            this.Load += new System.EventHandler(this.Form1_Load_1);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             this.tableLayoutPanel2.ResumeLayout(false);

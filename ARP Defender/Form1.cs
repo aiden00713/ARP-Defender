@@ -26,6 +26,10 @@ namespace ARP_Defender
         public Form1()
         {
             InitializeComponent(); //初始化組件
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
             hostip_label.Text = GetHostIPAddress();
             hostmac_label.Text = GetHostMACAddress();
             gatewayip_label.Text = GetGatewayIPAddress().ToString();
@@ -43,18 +47,13 @@ namespace ARP_Defender
             myTimer.Enabled = true;
             myTimer.Interval = 20000; //豪秒為單位，先20秒執行一次
             //test_label.Text = ;
-            //test_label.Text = "set neighbors" + " " + GetNetworkAdapterName() + " " + GetGatewayIPAddress().ToString() + " " + GetGatewayMACAddress(GetGatewayIPAddress().ToString());
-        }
-
-        private void Form1_Load(object sender, EventArgs e)
-        {
-            
+            //test_label.Text = "set neighbors" + " " + GetNetworkAdapterName() + " " + GetGatewayIPAddress().ToString() + " " + GetGatewayMACAddress(GetGatewayIPAddress().ToString()); 
         }
 
         /// <summary>
         /// Toolbar
         /// </summary>
-        
+
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
             e.Cancel = true;

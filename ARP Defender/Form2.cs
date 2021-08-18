@@ -22,11 +22,10 @@ namespace ARP_Defender
     {
         String attack_ip = string.Empty;
         String attack_mac = string.Empty;
-        String testlable = string.Empty;
+        //String testlable = string.Empty;
         public Form2()
         {
             InitializeComponent();
-            label4.Text = GetHostMACAddress();
         }
 
         private void Form2_Load(object sender, EventArgs e)
@@ -124,7 +123,9 @@ namespace ARP_Defender
                         {
                             if (arpPacket.SenderHardwareAddress.ToString() != GetHostMACAddress())
                             {
-                                //do what...
+                                attack_mac = arpPacket.SenderHardwareAddress.ToString();
+                                attack_ip = GetARPIPaddress(attack_mac);
+                                show_label.Text = "有人正在竄改你的 ARP 對應！";
                             }
                         }
                     }
@@ -161,12 +162,12 @@ namespace ARP_Defender
         }
         private void UpdateUI()
         {
-            test_label2.Text = testlable;
+            //test_label2.Text = testlable;
             attackip.Text = attack_ip;
             attackmac.Text = attack_mac;
         }
 
-        public string GetGatewayMACAddress(string GatewayIP)
+        public string GetARPIPaddress(string MACAddress)
         {
             string dirResults = string.Empty;
             ProcessStartInfo psi = new ProcessStartInfo();
@@ -174,7 +175,7 @@ namespace ARP_Defender
             psi.FileName = "arp";
             psi.RedirectStandardInput = false;
             psi.RedirectStandardOutput = true;
-            psi.Arguments = "-a " + GatewayIP;
+            psi.Arguments = "-a " + MACAddress;
             psi.UseShellExecute = false;
             psi.CreateNoWindow = true;
             try
@@ -183,43 +184,9 @@ namespace ARP_Defender
                 dirResults = proc.StandardOutput.ReadToEnd();
                 proc.WaitForExit();
             }
-            catch (Exception)
-            { }
+            catch (Exception){ }
 
-            Match m = Regex.Match(dirResults, "\\w+\\-\\w+\\-\\w+\\-\\w+\\-\\w+\\-\\w\\w");
-
-            if (m.ToString() != "")
-            {
-                return MACAddress_Upper(m.ToString());
-            }
-        }
-
-        public string MACAddress_Upper(string MACAddress)
-        {
-
-            string English = "ABCDEF";
-            string english = "abcdef";
-
-            string a = MACAddress;
-            string b = string.Empty;
-            for (int i = 0; i < a.Length; i++)
-            {
-                if (a[i] >= 'a' && a[i] <= 'f')
-                {
-                    for (int j = 0; j < 6; j++)
-                    {
-                        if (a[i] == english[j])
-                        {
-                            b += English[j];
-                        }
-                    }
-                }
-                else
-                {
-                    b += a[i];
-                }
-            }
-            return b;
-        }
+            return dirResults;
+         }
     }
 }

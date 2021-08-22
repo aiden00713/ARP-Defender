@@ -36,11 +36,12 @@
             this.label1 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.attackip = new System.Windows.Forms.Label();
-            this.attackbutton = new System.Windows.Forms.Button();
+            this.start_attackbutton = new System.Windows.Forms.Button();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.test_label2 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.show_label = new System.Windows.Forms.Label();
+            this.stop_attackbutton = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -50,22 +51,24 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tableLayoutPanel1.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Inset;
-            this.tableLayoutPanel1.ColumnCount = 3;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 40F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 40F));
+            this.tableLayoutPanel1.ColumnCount = 4;
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 30F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 30F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
             this.tableLayoutPanel1.Controls.Add(this.attackmac, 1, 1);
             this.tableLayoutPanel1.Controls.Add(this.label2, 1, 0);
             this.tableLayoutPanel1.Controls.Add(this.label1, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.label3, 2, 0);
             this.tableLayoutPanel1.Controls.Add(this.attackip, 0, 1);
-            this.tableLayoutPanel1.Controls.Add(this.attackbutton, 2, 1);
+            this.tableLayoutPanel1.Controls.Add(this.start_attackbutton, 2, 1);
+            this.tableLayoutPanel1.Controls.Add(this.stop_attackbutton, 3, 1);
+            this.tableLayoutPanel1.Controls.Add(this.label3, 3, 0);
             this.tableLayoutPanel1.Location = new System.Drawing.Point(21, 12);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 2;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(650, 95);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(727, 95);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // attackmac
@@ -75,9 +78,9 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.attackmac.AutoSize = true;
             this.attackmac.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.attackmac.Location = new System.Drawing.Point(263, 48);
+            this.attackmac.Location = new System.Drawing.Point(222, 48);
             this.attackmac.Name = "attackmac";
-            this.attackmac.Size = new System.Drawing.Size(250, 45);
+            this.attackmac.Size = new System.Drawing.Size(209, 45);
             this.attackmac.TabIndex = 5;
             this.attackmac.Text = "無";
             this.attackmac.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -89,9 +92,9 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label2.Location = new System.Drawing.Point(263, 2);
+            this.label2.Location = new System.Drawing.Point(222, 2);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(250, 44);
+            this.label2.Size = new System.Drawing.Size(209, 44);
             this.label2.TabIndex = 2;
             this.label2.Text = "攻擊主機 MAC 位址";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -105,7 +108,7 @@
             this.label1.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.label1.Location = new System.Drawing.Point(5, 2);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(250, 44);
+            this.label1.Size = new System.Drawing.Size(209, 44);
             this.label1.TabIndex = 1;
             this.label1.Text = "攻擊主機 IP 位址";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -117,9 +120,9 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label3.Location = new System.Drawing.Point(521, 2);
+            this.label3.Location = new System.Drawing.Point(439, 2);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(124, 44);
+            this.label3.Size = new System.Drawing.Size(137, 44);
             this.label3.TabIndex = 3;
             this.label3.Text = "動作";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -133,25 +136,26 @@
             this.attackip.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.attackip.Location = new System.Drawing.Point(5, 48);
             this.attackip.Name = "attackip";
-            this.attackip.Size = new System.Drawing.Size(250, 45);
+            this.attackip.Size = new System.Drawing.Size(209, 45);
             this.attackip.TabIndex = 4;
             this.attackip.Text = "無";
             this.attackip.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // attackbutton
+            // start_attackbutton
             // 
-            this.attackbutton.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.start_attackbutton.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.attackbutton.BackColor = System.Drawing.Color.Red;
-            this.attackbutton.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.attackbutton.ForeColor = System.Drawing.Color.White;
-            this.attackbutton.Location = new System.Drawing.Point(521, 51);
-            this.attackbutton.Name = "attackbutton";
-            this.attackbutton.Size = new System.Drawing.Size(124, 39);
-            this.attackbutton.TabIndex = 6;
-            this.attackbutton.Text = "反擊";
-            this.attackbutton.UseVisualStyleBackColor = false;
+            this.start_attackbutton.BackColor = System.Drawing.Color.Red;
+            this.start_attackbutton.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.start_attackbutton.ForeColor = System.Drawing.Color.White;
+            this.start_attackbutton.Location = new System.Drawing.Point(439, 51);
+            this.start_attackbutton.Name = "start_attackbutton";
+            this.start_attackbutton.Size = new System.Drawing.Size(137, 39);
+            this.start_attackbutton.TabIndex = 6;
+            this.start_attackbutton.Text = "反擊";
+            this.start_attackbutton.UseVisualStyleBackColor = false;
+            this.start_attackbutton.Click += new System.EventHandler(this.start_attackbutton_Click);
             // 
             // contextMenuStrip1
             // 
@@ -188,6 +192,21 @@
             this.show_label.TabIndex = 3;
             this.show_label.Text = "正常";
             // 
+            // stop_attackbutton
+            // 
+            this.stop_attackbutton.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.stop_attackbutton.Enabled = false;
+            this.stop_attackbutton.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.stop_attackbutton.Location = new System.Drawing.Point(584, 51);
+            this.stop_attackbutton.Name = "stop_attackbutton";
+            this.stop_attackbutton.Size = new System.Drawing.Size(138, 39);
+            this.stop_attackbutton.TabIndex = 7;
+            this.stop_attackbutton.Text = "取消反擊";
+            this.stop_attackbutton.UseVisualStyleBackColor = true;
+            this.stop_attackbutton.Click += new System.EventHandler(this.stop_attackbutton_Click);
+            // 
             // Form2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -219,9 +238,10 @@
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.Label attackmac;
         private System.Windows.Forms.Label attackip;
-        private System.Windows.Forms.Button attackbutton;
+        private System.Windows.Forms.Button start_attackbutton;
         private System.Windows.Forms.Label test_label2;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label show_label;
+        private System.Windows.Forms.Button stop_attackbutton;
     }
 }

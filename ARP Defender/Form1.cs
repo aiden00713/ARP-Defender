@@ -45,7 +45,7 @@ namespace ARP_Defender
             Count = 0;
             myTimer.Tick += new EventHandler(SendPacket);
             myTimer.Enabled = true;
-            myTimer.Interval = 10000; //豪秒為單位，1秒執行5次
+            myTimer.Interval = 250; //豪秒為單位，1秒執行4次
             //test_label.Text = ;
             //test_label.Text = "set neighbors" + " " + GetNetworkAdapterName() + " " + GetGatewayIPAddress().ToString() + " " + GetGatewayMACAddress(GetGatewayIPAddress().ToString()); 
         }
@@ -101,7 +101,7 @@ namespace ARP_Defender
             Count = 0;
             myTimer.Tick += new EventHandler(SendPacket);
             myTimer.Enabled = true;
-            myTimer.Interval = 10000; //豪秒為單位，1秒執行5次
+            myTimer.Interval = 250; //豪秒為單位，1秒執行4次
         }
 
         private void stop_Click(object sender, EventArgs e)
@@ -118,6 +118,7 @@ namespace ARP_Defender
 
         public string GetHostIPAddress()
         {
+            //透過socket連線Google DNS判定該主機IP是否能正確連上網路
             string localIP = string.Empty;
             Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, 0);
             socket.Connect("8.8.8.8", 65530);
@@ -129,6 +130,7 @@ namespace ARP_Defender
 
         public string GetHostMACAddress()
         {
+            //從NetworkInterface找出正在使用的網卡
             Dictionary<string, long> macAddresses = new Dictionary<string, long>();
             foreach (NetworkInterface nic in NetworkInterface.GetAllNetworkInterfaces())
             {
@@ -147,38 +149,33 @@ namespace ARP_Defender
                     maxValue = pair.Value;
                 }
             }
+            //格式表示
             var regex = "(.{2})(.{2})(.{2})(.{2})(.{2})(.{2})";
             var replace = "$1-$2-$3-$4-$5-$6";
             var mac_newformat = Regex.Replace(mac, regex, replace);
             return mac_newformat.ToString();
         }
 
-        public static IPAddress GetGatewayIPAddress(IPAddress netaddr = null)
+        public static IPAddress GetGatewayIPAddress()
         {
-            // user can provide an ip address that exists on the network they want to connect to, 
-            // or this routine will default to 8.8.8.8 (IP of a popular internet dns provider)
-            if (netaddr is null)
-            {
-                netaddr = IPAddress.Parse("8.8.8.8");
-            }
+            //透過ping Google DNS 達到traceroute效果，獲得主機預設閘道
+            IPAddress netaddr = IPAddress.Parse("8.8.8.8");
             
             PingReply reply = default;
             var ping = new Ping();
             var options = new PingOptions(1, true); // ttl=1, dont fragment=true
             try
             {
-                // I arbitrarily used a 200ms timeout; tune as you see fit.
+                //200毫秒就 timeout
                 reply = ping.Send(netaddr, 200, new byte[0], options);
             }
             catch (PingException)
             {
-                //System.Diagnostics.Debug.WriteLine("找不到預設閘道 IP 位址");
                 MessageBox.Show("找不到預設閘道 IP 位址，可能設備沒有連上網際網路，請確認後再開啟本程式。", "錯誤");
                 return default;
             }
             if (reply.Status != IPStatus.TtlExpired)
             {
-                //System.Diagnostics.Debug.WriteLine("找不到預設閘道 IP 位址");
                 MessageBox.Show("找不到預設閘道 IP 位址，可能設備沒有連上網際網路，請確認後再開啟本程式。", "錯誤");
                 return default;
             }
@@ -187,6 +184,7 @@ namespace ARP_Defender
 
         public string GetGatewayMACAddress(string GatewayIP)
         {
+            //呼叫 cmd 執行 arp -a 指令，透過IP找到ARP Table中MAC對應關係
             string dirResults = string.Empty;
             ProcessStartInfo psi = new ProcessStartInfo();
             Process proc = new Process();
@@ -308,22 +306,9 @@ namespace ARP_Defender
             Count++;
         }
 
-        //沒用到
-        public string MacFormat(string MacAddress)
-        {
-            
-            for (int i = 10; i > 0; i = i - 2)
-            {
-                MacAddress = MacAddress.Insert(i, "-");
-            }
-            
-            //MacAddress = MacAddress.Replace("-", "");
-            return MacAddress;
-        }
-
         public string MACAddress_Upper(string MACAddress)
         {
-
+            //將MAC位址十六位元英文小寫轉大寫
             string English = "ABCDEF";
             string english = "abcdef";
 

@@ -175,14 +175,22 @@ namespace ARP_Defender
             psi.FileName = "arp";
             psi.RedirectStandardInput = false;
             psi.RedirectStandardOutput = true;
-            psi.Arguments = "-a " + MACAddress;
+            psi.Arguments = "-a ";
             psi.UseShellExecute = false;
             psi.CreateNoWindow = true;
             try
             {
                 proc = Process.Start(psi);
-                dirResults = proc.StandardOutput.ReadToEnd();
+                var line = proc.StandardOutput.ReadLine();
                 proc.WaitForExit();
+
+                line = line.Replace(" ", " ");
+                var parts = line.Split(' ');
+
+                if (parts.Length > 1 && parts[1] == MACAddress)
+                {
+                    dirResults =  parts[0];
+                }
             }
             catch (Exception){ }
 

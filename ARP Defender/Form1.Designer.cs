@@ -280,9 +280,8 @@
             this.test_label.Font = new System.Drawing.Font("微軟正黑體", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.test_label.Location = new System.Drawing.Point(432, 477);
             this.test_label.Name = "test_label";
-            this.test_label.Size = new System.Drawing.Size(243, 26);
+            this.test_label.Size = new System.Drawing.Size(0, 26);
             this.test_label.TabIndex = 6;
-            this.test_label.Text = "輸出測試標籤，之後移除";
             // 
             // notifyIcon1
             // 

@@ -34,14 +34,14 @@
             this.attackmac = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
             this.attackip = new System.Windows.Forms.Label();
             this.start_attackbutton = new System.Windows.Forms.Button();
+            this.stop_attackbutton = new System.Windows.Forms.Button();
+            this.label3 = new System.Windows.Forms.Label();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.test_label2 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.show_label = new System.Windows.Forms.Label();
-            this.stop_attackbutton = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -113,20 +113,6 @@
             this.label1.Text = "攻擊主機 IP 位址";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // label3
-            // 
-            this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label3.Location = new System.Drawing.Point(439, 2);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(137, 44);
-            this.label3.TabIndex = 3;
-            this.label3.Text = "動作";
-            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
             // attackip
             // 
             this.attackip.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -147,6 +133,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.start_attackbutton.BackColor = System.Drawing.Color.Red;
+            this.start_attackbutton.Enabled = false;
             this.start_attackbutton.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.start_attackbutton.ForeColor = System.Drawing.Color.White;
             this.start_attackbutton.Location = new System.Drawing.Point(439, 51);
@@ -156,6 +143,35 @@
             this.start_attackbutton.Text = "反擊";
             this.start_attackbutton.UseVisualStyleBackColor = false;
             this.start_attackbutton.Click += new System.EventHandler(this.start_attackbutton_Click);
+            // 
+            // stop_attackbutton
+            // 
+            this.stop_attackbutton.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.stop_attackbutton.Enabled = false;
+            this.stop_attackbutton.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.stop_attackbutton.Location = new System.Drawing.Point(584, 51);
+            this.stop_attackbutton.Name = "stop_attackbutton";
+            this.stop_attackbutton.Size = new System.Drawing.Size(138, 39);
+            this.stop_attackbutton.TabIndex = 7;
+            this.stop_attackbutton.Text = "取消反擊";
+            this.stop_attackbutton.UseVisualStyleBackColor = true;
+            this.stop_attackbutton.Click += new System.EventHandler(this.stop_attackbutton_Click);
+            // 
+            // label3
+            // 
+            this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label3.Location = new System.Drawing.Point(584, 2);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(138, 44);
+            this.label3.TabIndex = 3;
+            this.label3.Text = "動作";
+            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // contextMenuStrip1
             // 
@@ -168,9 +184,8 @@
             this.test_label2.Font = new System.Drawing.Font("微軟正黑體", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.test_label2.Location = new System.Drawing.Point(648, 123);
             this.test_label2.Name = "test_label2";
-            this.test_label2.Size = new System.Drawing.Size(86, 24);
+            this.test_label2.Size = new System.Drawing.Size(0, 24);
             this.test_label2.TabIndex = 1;
-            this.test_label2.Text = "測試標籤";
             // 
             // label4
             // 
@@ -191,21 +206,6 @@
             this.show_label.Size = new System.Drawing.Size(48, 24);
             this.show_label.TabIndex = 3;
             this.show_label.Text = "正常";
-            // 
-            // stop_attackbutton
-            // 
-            this.stop_attackbutton.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.stop_attackbutton.Enabled = false;
-            this.stop_attackbutton.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.stop_attackbutton.Location = new System.Drawing.Point(584, 51);
-            this.stop_attackbutton.Name = "stop_attackbutton";
-            this.stop_attackbutton.Size = new System.Drawing.Size(138, 39);
-            this.stop_attackbutton.TabIndex = 7;
-            this.stop_attackbutton.Text = "取消反擊";
-            this.stop_attackbutton.UseVisualStyleBackColor = true;
-            this.stop_attackbutton.Click += new System.EventHandler(this.stop_attackbutton_Click);
             // 
             // Form2
             // 

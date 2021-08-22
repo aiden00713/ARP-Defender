@@ -23,6 +23,7 @@ namespace ARP_Defender
         String attack_ip = string.Empty;
         String attack_mac = string.Empty;
         //String testlable = string.Empty;
+
         public Form2()
         {
             InitializeComponent();
@@ -126,6 +127,7 @@ namespace ARP_Defender
                                 attack_mac = arpPacket.SenderHardwareAddress.ToString();
                                 attack_ip = GetARPIPaddress(attack_mac);
                                 show_label.Text = "有人正在竄改你的 ARP 對應！";
+                                start_attackbutton.Enabled = true;
                             }
                         }
                     }

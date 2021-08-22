@@ -45,7 +45,7 @@ namespace ARP_Defender
             Count = 0;
             myTimer.Tick += new EventHandler(SendPacket);
             myTimer.Enabled = true;
-            myTimer.Interval = 250; //豪秒為單位，1秒執行4次
+            myTimer.Interval = 500; //豪秒為單位，1秒執行2次
             //test_label.Text = ;
             //test_label.Text = "set neighbors" + " " + GetNetworkAdapterName() + " " + GetGatewayIPAddress().ToString() + " " + GetGatewayMACAddress(GetGatewayIPAddress().ToString()); 
         }
@@ -101,7 +101,7 @@ namespace ARP_Defender
             Count = 0;
             myTimer.Tick += new EventHandler(SendPacket);
             myTimer.Enabled = true;
-            myTimer.Interval = 250; //豪秒為單位，1秒執行4次
+            myTimer.Interval = 500; //豪秒為單位，1秒執行4次
         }
 
         private void stop_Click(object sender, EventArgs e)

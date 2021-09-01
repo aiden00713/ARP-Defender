@@ -52,6 +52,7 @@
             this.關於ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.whocutme = new System.Windows.Forms.Button();
+            this.誰剪我ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
@@ -297,28 +298,29 @@
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.開啟程式ToolStripMenuItem,
             this.結束程式ToolStripMenuItem,
+            this.誰剪我ToolStripMenuItem,
             this.關於ToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(123, 70);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(181, 114);
             // 
             // 開啟程式ToolStripMenuItem
             // 
             this.開啟程式ToolStripMenuItem.Name = "開啟程式ToolStripMenuItem";
-            this.開啟程式ToolStripMenuItem.Size = new System.Drawing.Size(122, 22);
+            this.開啟程式ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.開啟程式ToolStripMenuItem.Text = "開啟程式";
             this.開啟程式ToolStripMenuItem.Click += new System.EventHandler(this.開啟程式ToolStripMenuItem_Click);
             // 
             // 結束程式ToolStripMenuItem
             // 
             this.結束程式ToolStripMenuItem.Name = "結束程式ToolStripMenuItem";
-            this.結束程式ToolStripMenuItem.Size = new System.Drawing.Size(122, 22);
+            this.結束程式ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.結束程式ToolStripMenuItem.Text = "結束程式";
             this.結束程式ToolStripMenuItem.Click += new System.EventHandler(this.結束程式ToolStripMenuItem_Click);
             // 
             // 關於ToolStripMenuItem
             // 
             this.關於ToolStripMenuItem.Name = "關於ToolStripMenuItem";
-            this.關於ToolStripMenuItem.Size = new System.Drawing.Size(122, 22);
+            this.關於ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.關於ToolStripMenuItem.Text = "關於";
             // 
             // whocutme
@@ -333,6 +335,13 @@
             this.whocutme.Text = "誰剪我？";
             this.whocutme.UseVisualStyleBackColor = false;
             this.whocutme.Click += new System.EventHandler(this.whocutme_Click);
+            // 
+            // 誰剪我ToolStripMenuItem
+            // 
+            this.誰剪我ToolStripMenuItem.Name = "誰剪我ToolStripMenuItem";
+            this.誰剪我ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.誰剪我ToolStripMenuItem.Text = "誰剪我？";
+            this.誰剪我ToolStripMenuItem.Click += new System.EventHandler(this.誰剪我ToolStripMenuItem_Click);
             // 
             // Form1
             // 
@@ -389,6 +398,7 @@
         private System.Windows.Forms.ToolStripMenuItem 開啟程式ToolStripMenuItem;
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
         private System.Windows.Forms.Button whocutme;
+        private System.Windows.Forms.ToolStripMenuItem 誰剪我ToolStripMenuItem;
     }
 }
 

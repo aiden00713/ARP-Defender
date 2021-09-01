@@ -156,7 +156,7 @@ namespace ARP_Defender
             return mac_newformat.ToString();
         }
 
-        public static IPAddress GetGatewayIPAddress()
+        public static IPAddress GetGatewayIPAddress()          //public String GetGatewayIPAddress()
         {
             //透過ping Google DNS 達到traceroute效果，獲得主機預設閘道
             IPAddress netaddr = IPAddress.Parse("8.8.8.8");
@@ -172,11 +172,25 @@ namespace ARP_Defender
             catch (PingException)
             {
                 MessageBox.Show("找不到預設閘道 IP 位址，可能設備沒有連上網際網路，請確認後再開啟本程式。", "錯誤");
+                /*
+                show_label.Text = "尚未開啟防禦";
+                show_label.ForeColor = Color.Red;
+                start.Enabled = true;
+                stop.Enabled = false;
+                myTimer.Stop();
+                */
                 return default;
             }
             if (reply.Status != IPStatus.TtlExpired)
             {
                 MessageBox.Show("找不到預設閘道 IP 位址，可能設備沒有連上網際網路，請確認後再開啟本程式。", "錯誤");
+                /*
+                show_label.Text = "尚未開啟防禦";
+                show_label.ForeColor = Color.Red;
+                start.Enabled = true;
+                stop.Enabled = false;
+                myTimer.Stop();
+                */
                 return default;
             }
             return reply.Address;
@@ -212,6 +226,12 @@ namespace ARP_Defender
             else
             {
                 MessageBox.Show("找不到預設閘道 MAC 位址，ARP紀錄表查無該筆紀錄，請確認後再開啟本程式。", "錯誤");
+
+                show_label.Text = "尚未開啟防禦";
+                show_label.ForeColor = Color.Red;
+                start.Enabled = true;
+                stop.Enabled = false;
+                myTimer.Stop();
                 return "找不到預設閘道 MAC 位址";
             }
         }
@@ -335,6 +355,12 @@ namespace ARP_Defender
         }
 
         private void whocutme_Click(object sender, EventArgs e)
+        {
+            Form2 form2 = new Form2(); //創建子視窗
+            form2.Show();
+        }
+
+        private void 誰剪我ToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Form2 form2 = new Form2(); //創建子視窗
             form2.Show();

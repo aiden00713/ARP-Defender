@@ -28,8 +28,11 @@ namespace ARP_Defender
             InitializeComponent(); //初始化組件
         }
 
+        string GatewayIPAddress = string.Empty;
         private void Form1_Load(object sender, EventArgs e)
         {
+            GatewayIPAddress = GetGatewayIPAddress().ToString();
+
             hostip_label.Text = GetHostIPAddress();
             hostmac_label.Text = GetHostMACAddress();
             gatewayip_label.Text = GetGatewayIPAddress().ToString();
@@ -39,7 +42,7 @@ namespace ARP_Defender
             show_label.ForeColor = Color.Green;
             start.Enabled = false;
             stop.Enabled = true;
-            String cmdstr = "set neighbors" + " " + GetNetworkAdapterName() + " " + GetGatewayIPAddress().ToString() + " " + GetGatewayMACAddress(GetGatewayIPAddress().ToString());
+            String cmdstr = "set neighbors" + " " + GetNetworkAdapterName() + " " + GatewayIPAddress + " " + GetGatewayMACAddress(GatewayIPAddress);
             CMDARPstatic(cmdstr);
 
             Count = 0;
@@ -95,7 +98,7 @@ namespace ARP_Defender
             show_label.ForeColor = Color.Green;
             start.Enabled = false;
             stop.Enabled = true;
-            String cmdstr = "set neighbors" + " " + GetNetworkAdapterName() + " " + GetGatewayIPAddress().ToString() + " " + GetGatewayMACAddress(GetGatewayIPAddress().ToString());
+            String cmdstr = "set neighbors" + " " + GetNetworkAdapterName() + " " + GatewayIPAddress + " " + GetGatewayMACAddress(GatewayIPAddress);
             CMDARPstatic(cmdstr);
 
             Count = 0;
@@ -110,7 +113,7 @@ namespace ARP_Defender
             show_label.ForeColor = Color.Red;
             start.Enabled = true;
             stop.Enabled = false;
-            String cmdstr = "delete neighbors" + " " + GetNetworkAdapterName() + " " + GetGatewayIPAddress().ToString();
+            String cmdstr = "delete neighbors" + " " + GetNetworkAdapterName() + " " + GatewayIPAddress;
             CMDARPdeletestatic(cmdstr);
 
             myTimer.Stop();
@@ -287,14 +290,14 @@ namespace ARP_Defender
 
         public EthernetPacket Send_ARPResponse_Packet()
         {
-            string strEthDestMAC = GetGatewayMACAddress(GetGatewayIPAddress().ToString());
+            string strEthDestMAC = GetGatewayMACAddress(GatewayIPAddress);
             string strEhSourMac = GetHostMACAddress();
 
             string strARPSourIP = GetHostIPAddress();
             string strARPSourMac = GetHostMACAddress();
 
-            string strARPDestIP = GetGatewayIPAddress().ToString();
-            string strARPDestMac = GetGatewayMACAddress(GetGatewayIPAddress().ToString());
+            string strARPDestIP = GatewayIPAddress;
+            string strARPDestMac = GetGatewayMACAddress(GatewayIPAddress);
 
             ArpPacket arp = new ArpPacket(ArpOperation.Response, PhysicalAddress.Parse(strARPDestMac), IPAddress.Parse(strARPDestIP), PhysicalAddress.Parse(strARPSourMac), IPAddress.Parse(strARPSourIP));
             EthernetPacket eth = new EthernetPacket(PhysicalAddress.Parse(strEhSourMac), PhysicalAddress.Parse(strEthDestMAC), EthernetType.Arp);

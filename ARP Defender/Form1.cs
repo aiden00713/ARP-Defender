@@ -16,7 +16,6 @@ using SharpPcap;
 using SharpPcap.LibPcap;
 using PacketDotNet;
 
-
 namespace ARP_Defender
 {
     public partial class Form1 : Form
@@ -235,7 +234,6 @@ namespace ARP_Defender
             else
             {
                 return NOTFoundGatewayMACAddresses();
-                
             }
         }
 

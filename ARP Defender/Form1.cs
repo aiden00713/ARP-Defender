@@ -38,6 +38,11 @@ namespace ARP_Defender
             gatewayip_label.Text = GetGatewayIPAddress().ToString();
             gatewaymac_label.Text = GetGatewayMACAddress(GetGatewayIPAddress().ToString());
 
+            if (gatewaymac_label.ToString() == "NOT Found！")
+            {
+                gatewaymac_label.Text = NOTFoundGatewayMACAddresses();
+            }
+            /*
             show_label.Text = "開啟防禦";
             show_label.ForeColor = Color.Green;
             start.Enabled = false;
@@ -49,6 +54,7 @@ namespace ARP_Defender
             myTimer.Tick += new EventHandler(SendPacket);
             myTimer.Enabled = true;
             myTimer.Interval = 500; //豪秒為單位，1秒執行2次
+            */
             //test_label.Text = ;
             //test_label.Text = "set neighbors" + " " + GetNetworkAdapterName() + " " + GetGatewayIPAddress().ToString() + " " + GetGatewayMACAddress(GetGatewayIPAddress().ToString()); 
         }
@@ -104,7 +110,7 @@ namespace ARP_Defender
             Count = 0;
             myTimer.Tick += new EventHandler(SendPacket);
             myTimer.Enabled = true;
-            myTimer.Interval = 500; //豪秒為單位，1秒執行4次
+            myTimer.Interval = 500; //豪秒為單位，1秒執行2次
         }
 
         private void stop_Click(object sender, EventArgs e)
@@ -166,7 +172,7 @@ namespace ARP_Defender
             
             PingReply reply = default;
             var ping = new Ping();
-            var options = new PingOptions(1, true); // ttl=1, dont fragment=true
+            var options = new PingOptions(1, true); // ttl=1, don't fragment=true
             try
             {
                 //200毫秒就 timeout
@@ -228,14 +234,55 @@ namespace ARP_Defender
             }
             else
             {
-                MessageBox.Show("找不到預設閘道 MAC 位址，ARP紀錄表查無該筆紀錄，請確認後再開啟本程式。", "錯誤");
+                return NOTFoundGatewayMACAddresses();
+                
+            }
+        }
 
-                show_label.Text = "尚未開啟防禦";
-                show_label.ForeColor = Color.Red;
-                start.Enabled = true;
-                stop.Enabled = false;
-                myTimer.Stop();
-                return "找不到預設閘道 MAC 位址";
+        public String NOTFoundGatewayMACAddresses()
+        {
+            //假如找不到Gateway 的IP與MAC對應，就從網卡找尋Gateway 的IP重新在ARP Table找對應
+
+            NetworkInterface[] adapters = NetworkInterface.GetAllNetworkInterfaces();
+            foreach (NetworkInterface adapter in adapters)
+            {
+                if (adapter.OperationalStatus == OperationalStatus.Up)
+                {
+                    foreach (GatewayIPAddressInformation address in adapter.GetIPProperties().GatewayAddresses)
+                    {
+                        gatewayip_label.Text = address.Address.ToString();
+                    }
+                }          
+            }
+
+            string dirResults = string.Empty;
+            ProcessStartInfo psi = new ProcessStartInfo();
+            Process proc = new Process();
+            psi.FileName = "arp";
+            psi.RedirectStandardInput = false;
+            psi.RedirectStandardOutput = true;
+            psi.Arguments = "-a " + gatewayip_label.Text;
+            psi.UseShellExecute = false;
+            psi.CreateNoWindow = true;
+            try
+            {
+                proc = Process.Start(psi);
+                dirResults = proc.StandardOutput.ReadToEnd();
+                proc.WaitForExit();
+            }
+            catch (Exception)
+            { }
+
+            Match m = Regex.Match(dirResults, "\\w+\\-\\w+\\-\\w+\\-\\w+\\-\\w+\\-\\w\\w");
+
+            if (m.ToString() != "")
+            {
+                return MACAddress_Upper(m.ToString());
+            }
+            else
+            {
+                return "NOT Found！";
+
             }
         }
 
@@ -322,11 +369,24 @@ namespace ARP_Defender
             }
 
             //test_label.Text = devices[i].Interface.FriendlyName;
-            var device = devices[i];
-            device.Open();
-            EthernetPacket eth = Send_ARPResponse_Packet();
-            device.SendPacket(eth);
-            Count++;
+            try
+            {
+                var device = devices[i];
+                device.Open();
+                EthernetPacket eth = Send_ARPResponse_Packet();
+                device.SendPacket(eth);
+                Count++;
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("無法正常防禦，請確認後再開啟本程式。", "錯誤");
+                show_label.Text = "尚未開啟防禦";
+                show_label.ForeColor = Color.Red;
+                start.Enabled = true;
+                stop.Enabled = false;
+                myTimer.Stop();
+            }
+            
         }
 
         public string MACAddress_Upper(string MACAddress)

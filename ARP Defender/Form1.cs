@@ -22,6 +22,7 @@ namespace ARP_Defender
     {
         Timer myTimer = new Timer();
         int Count = 0;
+        int Freq = 300; //豪秒為單位，1秒執行3次
         public Form1()
         {
             InitializeComponent(); //初始化組件
@@ -52,7 +53,7 @@ namespace ARP_Defender
             Count = 0;
             myTimer.Tick += new EventHandler(SendPacket);
             myTimer.Enabled = true;
-            myTimer.Interval = 500; //豪秒為單位，1秒執行2次
+            myTimer.Interval = Freq;
             */
             //test_label.Text = ;
             //test_label.Text = "set neighbors" + " " + GetNetworkAdapterName() + " " + GetGatewayIPAddress().ToString() + " " + GetGatewayMACAddress(GetGatewayIPAddress().ToString()); 
@@ -109,7 +110,7 @@ namespace ARP_Defender
             Count = 0;
             myTimer.Tick += new EventHandler(SendPacket);
             myTimer.Enabled = true;
-            myTimer.Interval = 500; //豪秒為單位，1秒執行2次
+            myTimer.Interval = Freq;
         }
 
         private void stop_Click(object sender, EventArgs e)

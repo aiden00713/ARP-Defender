@@ -22,7 +22,7 @@ namespace ARP_Defender
     {
         Timer myTimer = new Timer();
         int Count = 0;
-        int Freq = 300; //豪秒為單位，1秒執行3次
+        int Freq = 300; //豪秒為單位，1秒執行3次 //500
         public Form1()
         {
             InitializeComponent(); //初始化組件
@@ -42,21 +42,27 @@ namespace ARP_Defender
             {
                 gatewaymac_label.Text = NOTFoundGatewayMACAddresses();
             }
-            /*
-            show_label.Text = "開啟防禦";
-            show_label.ForeColor = Color.Green;
-            start.Enabled = false;
-            stop.Enabled = true;
-            String cmdstr = "set neighbors" + " " + GetNetworkAdapterName() + " " + GatewayIPAddress + " " + GetGatewayMACAddress(GatewayIPAddress);
-            CMDARPstatic(cmdstr);
 
-            Count = 0;
-            myTimer.Tick += new EventHandler(SendPacket);
-            myTimer.Enabled = true;
-            myTimer.Interval = Freq;
-            */
-            //test_label.Text = ;
-            //test_label.Text = "set neighbors" + " " + GetNetworkAdapterName() + " " + GetGatewayIPAddress().ToString() + " " + GetGatewayMACAddress(GetGatewayIPAddress().ToString()); 
+            var devices = LibPcapLiveDeviceList.Instance;
+            int i = 0;
+            foreach (var dev in devices)
+            {
+                if (dev.Interface.FriendlyName == GetNetworkAdapterName())
+                {
+                    break;
+                }
+                else
+                {
+                    i++;
+                }
+            }
+
+            var device = devices[i];
+            device.Open();
+            //device.Filter = "arp"; //過濾ARP封包
+            /* 當條件的封包被被截取時，執行 device_OnPacketArrival */
+            device.OnPacketArrival += new PacketArrivalEventHandler(device_OnPacketArrival);
+            device.StartCapture();
         }
 
         /// <summary>
@@ -100,29 +106,44 @@ namespace ARP_Defender
 
         private void start_Click(object sender, EventArgs e)
         {
-            show_label.Text = "開啟防禦";
+            show_label.Text = "開啟偵測";
             show_label.ForeColor = Color.Green;
             start.Enabled = false;
             stop.Enabled = true;
             String cmdstr = "set neighbors" + " " + GetNetworkAdapterName() + " " + GatewayIPAddress + " " + GetGatewayMACAddress(GatewayIPAddress);
             CMDARPstatic(cmdstr);
-
-            Count = 0;
-            myTimer.Tick += new EventHandler(SendPacket);
-            myTimer.Enabled = true;
-            myTimer.Interval = Freq;
         }
 
         private void stop_Click(object sender, EventArgs e)
         {
-            show_label.Text = "尚未開啟防禦";
+            show_label.Text = "尚未開啟偵測";
             show_label.ForeColor = Color.Red;
+            attackmac.Text = "無";
+            attackip.Text = "無";
             start.Enabled = true;
             stop.Enabled = false;
             String cmdstr = "delete neighbors" + " " + GetNetworkAdapterName() + " " + GatewayIPAddress;
             CMDARPdeletestatic(cmdstr);
 
             myTimer.Stop();
+
+            var devices = LibPcapLiveDeviceList.Instance;
+            int i = 0;
+            foreach (var dev in devices)
+            {
+                if (dev.Interface.FriendlyName == GetNetworkAdapterName())
+                {
+                    break;
+                }
+                else
+                {
+                    i++;
+                }
+            }
+
+            var device = devices[i];
+            device.Close();
+            device.StopCapture();
         }
 
         public string GetHostIPAddress()
@@ -416,16 +437,73 @@ namespace ARP_Defender
             return b;
         }
 
-        private void whocutme_Click(object sender, EventArgs e)
+        /*偵測*/
+
+        private void device_OnPacketArrival(object sender, PacketCapture e)
         {
-            Form2 form2 = new Form2(); //創建子視窗
-            form2.Show();
+            try
+            {
+                var rawPacket = e.GetPacket();
+                var packet = Packet.ParsePacket(rawPacket.LinkLayerType, rawPacket.Data); //封裝
+                var arpPacket = packet.Extract<ArpPacket>(); //ARP封包
+
+                if (arpPacket != null)
+                {
+                    if (arpPacket.Operation.ToString() == "Request") //只收集請求封包
+                    {
+                        if (arpPacket.SenderProtocolAddress.ToString() == GetHostIPAddress())
+                        {
+                            if (arpPacket.SenderHardwareAddress.ToString() != GetHostMACAddress())
+                            {
+                                attackmac.Text = arpPacket.SenderHardwareAddress.ToString();
+                                attackip.Text = GetARPIPaddress(attackmac.Text);
+                                show_attack_label.Text = "有人正在竄改你的 ARP 對應！";
+                                show_label.Text = "開啟偵測與防禦";
+                                show_label.ForeColor = Color.Blue;
+
+                                //防禦封包
+                                myTimer.Tick += new EventHandler(SendPacket);
+                                myTimer.Enabled = true;
+                                myTimer.Interval = Freq;
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception exce)
+            {
+                MessageBox.Show(exce.ToString(), "Error");
+            }
         }
 
-        private void 誰剪我ToolStripMenuItem_Click(object sender, EventArgs e)
+        public string GetARPIPaddress(string MACAddress)
         {
-            Form2 form2 = new Form2(); //創建子視窗
-            form2.Show();
+            string dirResults = string.Empty;
+            ProcessStartInfo psi = new ProcessStartInfo();
+            Process proc = new Process();
+            psi.FileName = "arp";
+            psi.RedirectStandardInput = false;
+            psi.RedirectStandardOutput = true;
+            psi.Arguments = "-a ";
+            psi.UseShellExecute = false;
+            psi.CreateNoWindow = true;
+            try
+            {
+                proc = Process.Start(psi);
+                var line = proc.StandardOutput.ReadLine();
+                proc.WaitForExit();
+
+                line = line.Replace(" ", " ");
+                var parts = line.Split(' ');
+
+                if (parts.Length > 1 && parts[1] == MACAddress)
+                {
+                    dirResults = parts[0];
+                }
+            }
+            catch (Exception) { }
+
+            return dirResults;
         }
     }
 }

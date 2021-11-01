@@ -23,6 +23,7 @@ namespace ARP_Defender
         Timer myTimer = new Timer();
         int Count = 0;
         int Freq = 300; //豪秒為單位，1秒執行3次 //500
+        int check = 0;  //防禦
         public Form1()
         {
             InitializeComponent(); //初始化組件
@@ -42,7 +43,7 @@ namespace ARP_Defender
             {
                 gatewaymac_label.Text = NOTFoundGatewayMACAddresses();
             }
-
+            /*
             var devices = LibPcapLiveDeviceList.Instance;
             int i = 0;
             foreach (var dev in devices)
@@ -56,13 +57,13 @@ namespace ARP_Defender
                     i++;
                 }
             }
-
+            
             var device = devices[i];
-            device.Open();
+            device.Open();*/
             //device.Filter = "arp"; //過濾ARP封包
             /* 當條件的封包被被截取時，執行 device_OnPacketArrival */
-            device.OnPacketArrival += new PacketArrivalEventHandler(device_OnPacketArrival);
-            device.StartCapture();
+           /* device.OnPacketArrival += new PacketArrivalEventHandler(device_OnPacketArrival);
+            device.StartCapture();*/
         }
 
         /// <summary>
@@ -112,16 +113,38 @@ namespace ARP_Defender
             stop.Enabled = true;
             String cmdstr = "set neighbors" + " " + GetNetworkAdapterName() + " " + GatewayIPAddress + " " + GetGatewayMACAddress(GatewayIPAddress);
             CMDARPstatic(cmdstr);
+
+            var devices = LibPcapLiveDeviceList.Instance;
+            int i = 0;
+            foreach (var dev in devices)
+            {
+                if (dev.Interface.FriendlyName == GetNetworkAdapterName())
+                {
+                    break;
+                }
+                else
+                {
+                    i++;
+                }
+            }
+
+            var device = devices[i];
+            device.Open();
+            //device.Filter = "arp"; //過濾ARP封包
+            /* 當條件的封包被被截取時，執行 device_OnPacketArrival */
+            device.OnPacketArrival += new PacketArrivalEventHandler(device_OnPacketArrival);
+            device.StartCapture();
         }
 
         private void stop_Click(object sender, EventArgs e)
         {
             show_label.Text = "尚未開啟偵測";
             show_label.ForeColor = Color.Red;
-            attackmac.Text = "無";
-            attackip.Text = "無";
+            attack_mac_textBox.Text = "無";
+            attack_ip_textBox.Text = "無";
             start.Enabled = true;
             stop.Enabled = false;
+            show_attack_label.Text = "";
             String cmdstr = "delete neighbors" + " " + GetNetworkAdapterName() + " " + GatewayIPAddress;
             CMDARPdeletestatic(cmdstr);
 
@@ -438,7 +461,11 @@ namespace ARP_Defender
         }
 
         /*偵測*/
-
+        String attack_ip = string.Empty;
+        String attack_mac = string.Empty;
+        String show1 = string.Empty;
+        String show2 = string.Empty;
+        
         private void device_OnPacketArrival(object sender, PacketCapture e)
         {
             try
@@ -449,23 +476,30 @@ namespace ARP_Defender
 
                 if (arpPacket != null)
                 {
+                    MethodInvoker mi = new MethodInvoker(this.UpdateUI);
+                    this.BeginInvoke(mi, null);
+
                     if (arpPacket.Operation.ToString() == "Request") //只收集請求封包
                     {
-                        if (arpPacket.SenderProtocolAddress.ToString() == GetHostIPAddress())
+                        if (arpPacket.SenderProtocolAddress.ToString() == gatewayip_label.Text)
                         {
-                            if (arpPacket.SenderHardwareAddress.ToString() != GetHostMACAddress())
+                            if (arpPacket.SenderHardwareAddress.ToString() != gatewaymac_label.Text)
                             {
-                                attackmac.Text = arpPacket.SenderHardwareAddress.ToString();
-                                attackip.Text = GetARPIPaddress(attackmac.Text);
-                                show_attack_label.Text = "有人正在竄改你的 ARP 對應！";
-                                show_label.Text = "開啟偵測與防禦";
-                                show_label.ForeColor = Color.Blue;
+                                attack_mac = arpPacket.SenderHardwareAddress.ToString();
+                                attack_ip = GetARPIPaddress(attack_mac);
+                                show1 = "有人正在竄改你的 ARP 對應！";
+                                show2 = "開啟偵測與防禦";
+                                check = 1;
+                            }
 
-                                //防禦封包
+                            if(check == 1)
+                            {
                                 myTimer.Tick += new EventHandler(SendPacket);
                                 myTimer.Enabled = true;
                                 myTimer.Interval = Freq;
+                                check++;
                             }
+
                         }
                     }
                 }
@@ -474,6 +508,15 @@ namespace ARP_Defender
             {
                 MessageBox.Show(exce.ToString(), "Error");
             }
+        }
+
+        private void UpdateUI()
+        {
+            attack_ip_textBox.Text += attack_ip + "\n";
+            attack_mac_textBox.Text += attack_mac + "\n";
+            show_attack_label.Text = show1 ;
+            show_label.Text = show2;
+            show_label.ForeColor = Color.Blue;
         }
 
         public string GetARPIPaddress(string MACAddress)

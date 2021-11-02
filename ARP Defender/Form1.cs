@@ -134,6 +134,8 @@ namespace ARP_Defender
             /* 當條件的封包被被截取時，執行 device_OnPacketArrival */
             device.OnPacketArrival += new PacketArrivalEventHandler(device_OnPacketArrival);
             device.StartCapture();
+
+            check = 0;
         }
 
         private void stop_Click(object sender, EventArgs e)
@@ -378,6 +380,7 @@ namespace ARP_Defender
             return NetworkAdapterName;
         }
 
+        //要修改
         public EthernetPacket Send_ARPResponse_Packet()
         {
             string strEthDestMAC = GetGatewayMACAddress(GatewayIPAddress);
@@ -512,7 +515,7 @@ namespace ARP_Defender
 
         private void UpdateUI()
         {
-            attack_ip_textBox.Text += attack_ip + "\n";
+            attack_ip_textBox.Text += "\n" + attack_ip;
             attack_mac_textBox.Text += attack_mac + "\n";
             show_attack_label.Text = show1 ;
             show_label.Text = show2;

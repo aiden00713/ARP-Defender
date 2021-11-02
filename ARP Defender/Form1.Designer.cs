@@ -334,11 +334,11 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.show_attack_label.AutoSize = true;
             this.show_attack_label.BackColor = System.Drawing.Color.Transparent;
-            this.show_attack_label.Font = new System.Drawing.Font("微軟正黑體", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.show_attack_label.Font = new System.Drawing.Font("微軟正黑體", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.show_attack_label.ForeColor = System.Drawing.Color.Red;
-            this.show_attack_label.Location = new System.Drawing.Point(261, 111);
+            this.show_attack_label.Location = new System.Drawing.Point(91, 115);
             this.show_attack_label.Name = "show_attack_label";
-            this.show_attack_label.Size = new System.Drawing.Size(0, 35);
+            this.show_attack_label.Size = new System.Drawing.Size(0, 31);
             this.show_attack_label.TabIndex = 8;
             this.show_attack_label.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
@@ -400,8 +400,10 @@
             this.attack_mac_textBox.Location = new System.Drawing.Point(296, 38);
             this.attack_mac_textBox.Multiline = true;
             this.attack_mac_textBox.Name = "attack_mac_textBox";
+            this.attack_mac_textBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.attack_mac_textBox.Size = new System.Drawing.Size(287, 109);
             this.attack_mac_textBox.TabIndex = 7;
+            this.attack_mac_textBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // attack_ip_textBox
             // 
@@ -413,9 +415,10 @@
             this.attack_ip_textBox.Location = new System.Drawing.Point(3, 38);
             this.attack_ip_textBox.Multiline = true;
             this.attack_ip_textBox.Name = "attack_ip_textBox";
-            this.attack_ip_textBox.ScrollBars = System.Windows.Forms.ScrollBars.Horizontal;
+            this.attack_ip_textBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.attack_ip_textBox.Size = new System.Drawing.Size(287, 109);
             this.attack_ip_textBox.TabIndex = 6;
+            this.attack_ip_textBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // Form1
             // 

@@ -28,42 +28,28 @@ namespace ARP_Defender
         {
             InitializeComponent(); //初始化組件
         }
-
+        string HostIPAddress = string.Empty;
+        string HostMACAddress = string.Empty;
         string GatewayIPAddress = string.Empty;
+        string GatewayMACAddress = string.Empty;
+
         private void Form1_Load(object sender, EventArgs e)
         {
-            GatewayIPAddress = GetGatewayIPAddress().ToString();
+            HostIPAddress = GetHostIPAddress();
+            HostMACAddress = GetHostMACAddress();
+            GatewayIPAddress = GetGatewayIPAddress();
+            GatewayMACAddress = GetGatewayMACAddress(GatewayIPAddress);
 
-            hostip_label.Text = GetHostIPAddress();
-            hostmac_label.Text = GetHostMACAddress();
-            gatewayip_label.Text = GetGatewayIPAddress().ToString();
-            gatewaymac_label.Text = GetGatewayMACAddress(GetGatewayIPAddress().ToString());
+
+            hostip_label.Text = HostIPAddress;
+            hostmac_label.Text = HostMACAddress;
+            gatewayip_label.Text = GatewayIPAddress;
+            gatewaymac_label.Text = GatewayMACAddress;
 
             if (gatewaymac_label.ToString() == "NOT Found！")
             {
                 gatewaymac_label.Text = NOTFoundGatewayMACAddresses();
             }
-            /*
-            var devices = LibPcapLiveDeviceList.Instance;
-            int i = 0;
-            foreach (var dev in devices)
-            {
-                if (dev.Interface.FriendlyName == GetNetworkAdapterName())
-                {
-                    break;
-                }
-                else
-                {
-                    i++;
-                }
-            }
-            
-            var device = devices[i];
-            device.Open();*/
-            //device.Filter = "arp"; //過濾ARP封包
-            /* 當條件的封包被被截取時，執行 device_OnPacketArrival */
-           /* device.OnPacketArrival += new PacketArrivalEventHandler(device_OnPacketArrival);
-            device.StartCapture();*/
         }
 
         /// <summary>
@@ -247,8 +233,7 @@ namespace ARP_Defender
                 dirResults = proc.StandardOutput.ReadToEnd();
                 proc.WaitForExit();
             }
-            catch (Exception)
-            { }
+            catch (Exception){ }
 
             Match m = Regex.Match(dirResults, "\\w+\\-\\w+\\-\\w+\\-\\w+\\-\\w+\\-\\w\\w");
 
@@ -264,20 +249,6 @@ namespace ARP_Defender
 
         public String NOTFoundGatewayMACAddresses()
         {
-            //假如找不到Gateway 的IP與MAC對應，就從網卡找尋Gateway 的IP重新在ARP Table找對應
-
-           /* NetworkInterface[] adapters = NetworkInterface.GetAllNetworkInterfaces();
-            foreach (NetworkInterface adapter in adapters)
-            {
-                if (adapter.OperationalStatus == OperationalStatus.Up)
-                {
-                    foreach (GatewayIPAddressInformation address in adapter.GetIPProperties().GatewayAddresses)
-                    {
-                        gatewayip_label.Text = address.Address.ToString();
-                    }
-                }          
-            }*/
-
             string dirResults = string.Empty;
             ProcessStartInfo psi = new ProcessStartInfo();
             Process proc = new Process();
@@ -293,8 +264,7 @@ namespace ARP_Defender
                 dirResults = proc.StandardOutput.ReadToEnd();
                 proc.WaitForExit();
             }
-            catch (Exception)
-            { }
+            catch (Exception){ }
 
             Match m = Regex.Match(dirResults, "\\w+\\-\\w+\\-\\w+\\-\\w+\\-\\w+\\-\\w\\w");
 
@@ -305,7 +275,6 @@ namespace ARP_Defender
             else
             {
                 return "NOT Found！";
-
             }
         }
 
@@ -323,8 +292,6 @@ namespace ARP_Defender
             CmdProcess.StandardInput.WriteLine("netsh -c \"interface ipv4\"");
             CmdProcess.StandardInput.WriteLine(cmdstr);
             CmdProcess.StandardInput.WriteLine("exit");
- 
-            //CmdProcess.WaitForExit();//等待程式執行完退出程序   
             CmdProcess.Close(); //結束 
         }
 
@@ -361,14 +328,14 @@ namespace ARP_Defender
         //要修改
         public EthernetPacket Send_ARPResponse_Packet()
         {
-            string strEthDestMAC = GetGatewayMACAddress(GatewayIPAddress);
-            string strEhSourMac = GetHostMACAddress();
+            string strEthDestMAC = GatewayMACAddress;
+            string strEhSourMac = HostMACAddress;
 
-            string strARPSourIP = GetHostIPAddress();
-            string strARPSourMac = GetHostMACAddress();
+            string strARPSourIP = HostIPAddress;
+            string strARPSourMac = HostMACAddress;
 
             string strARPDestIP = GatewayIPAddress;
-            string strARPDestMac = GetGatewayMACAddress(GatewayIPAddress);
+            string strARPDestMac = GatewayMACAddress;
 
             ArpPacket arp = new ArpPacket(ArpOperation.Response, PhysicalAddress.Parse(strARPDestMac), IPAddress.Parse(strARPDestIP), PhysicalAddress.Parse(strARPSourMac), IPAddress.Parse(strARPSourIP));
             EthernetPacket eth = new EthernetPacket(PhysicalAddress.Parse(strEhSourMac), PhysicalAddress.Parse(strEthDestMAC), EthernetType.Arp);
@@ -391,7 +358,6 @@ namespace ARP_Defender
                     i++;
                 }
             }
-
             //test_label.Text = devices[i].Interface.FriendlyName;
             try
             {
@@ -410,7 +376,6 @@ namespace ARP_Defender
                 stop.Enabled = false;
                 myTimer.Stop();
             }
-            
         }
 
         public string MACAddress_Upper(string MACAddress)
@@ -534,7 +499,6 @@ namespace ARP_Defender
                 }
             }
             catch (Exception) { }
-
             return dirResults;
         }
     }

@@ -23,7 +23,7 @@ namespace ARP_Defender
         Timer myTimer = new Timer();
         int Count = 0;
         int Freq = 300; //豪秒為單位，1秒執行3次 //500
-        int check = 0;  //防禦
+        Boolean check = false;  //防禦判斷
         public Form1()
         {
             InitializeComponent(); //初始化組件
@@ -135,7 +135,7 @@ namespace ARP_Defender
             device.OnPacketArrival += new PacketArrivalEventHandler(device_OnPacketArrival);
             device.StartCapture();
 
-            check = 0;
+            check = false;
         }
 
         private void stop_Click(object sender, EventArgs e)
@@ -169,6 +169,7 @@ namespace ARP_Defender
             var device = devices[i];
             device.Close();
             device.StopCapture();
+            check = false;
         }
 
         public string GetHostIPAddress()
@@ -211,44 +212,21 @@ namespace ARP_Defender
             return mac_newformat.ToString();
         }
 
-        public static IPAddress GetGatewayIPAddress()          //public String GetGatewayIPAddress()
+        public string GetGatewayIPAddress()          //public String GetGatewayIPAddress()
         {
-            //透過ping Google DNS 達到traceroute效果，獲得主機預設閘道
-            IPAddress netaddr = IPAddress.Parse("8.8.8.8");
-            
-            PingReply reply = default;
-            var ping = new Ping();
-            var options = new PingOptions(1, true); // ttl=1, don't fragment=true
-            try
+            string ip = string.Empty;
+            NetworkInterface[] adapters = NetworkInterface.GetAllNetworkInterfaces();
+            foreach (NetworkInterface adapter in adapters)
             {
-                //200毫秒就 timeout
-                reply = ping.Send(netaddr, 200, new byte[0], options);
+                if (adapter.OperationalStatus == OperationalStatus.Up)
+                {
+                    foreach (GatewayIPAddressInformation address in adapter.GetIPProperties().GatewayAddresses)
+                    {
+                        ip = address.Address.ToString();
+                    }
+                }
             }
-            catch (PingException)
-            {
-                MessageBox.Show("找不到預設閘道 IP 位址，可能設備沒有連上網際網路，請確認後再開啟本程式。", "錯誤");
-                /*
-                show_label.Text = "尚未開啟防禦";
-                show_label.ForeColor = Color.Red;
-                start.Enabled = true;
-                stop.Enabled = false;
-                myTimer.Stop();
-                */
-                return default;
-            }
-            if (reply.Status != IPStatus.TtlExpired)
-            {
-                MessageBox.Show("找不到預設閘道 IP 位址，可能設備沒有連上網際網路，請確認後再開啟本程式。", "錯誤");
-                /*
-                show_label.Text = "尚未開啟防禦";
-                show_label.ForeColor = Color.Red;
-                start.Enabled = true;
-                stop.Enabled = false;
-                myTimer.Stop();
-                */
-                return default;
-            }
-            return reply.Address;
+            return ip;
         }
 
         public string GetGatewayMACAddress(string GatewayIP)
@@ -288,7 +266,7 @@ namespace ARP_Defender
         {
             //假如找不到Gateway 的IP與MAC對應，就從網卡找尋Gateway 的IP重新在ARP Table找對應
 
-            NetworkInterface[] adapters = NetworkInterface.GetAllNetworkInterfaces();
+           /* NetworkInterface[] adapters = NetworkInterface.GetAllNetworkInterfaces();
             foreach (NetworkInterface adapter in adapters)
             {
                 if (adapter.OperationalStatus == OperationalStatus.Up)
@@ -298,7 +276,7 @@ namespace ARP_Defender
                         gatewayip_label.Text = address.Address.ToString();
                     }
                 }          
-            }
+            }*/
 
             string dirResults = string.Empty;
             ProcessStartInfo psi = new ProcessStartInfo();
@@ -490,17 +468,25 @@ namespace ARP_Defender
                             {
                                 attack_mac = arpPacket.SenderHardwareAddress.ToString();
                                 attack_ip = GetARPIPaddress(attack_mac);
-                                show1 = "有人正在竄改你的 ARP 對應！";
-                                show2 = "開啟偵測與防禦";
-                                check = 1;
+                                check = true;
+                            }
+                            else
+                            {
+                                check = false;
                             }
 
-                            if(check == 1)
+                            if(check)
                             {
+                                show1 = "有人正在竄改你的 ARP 對應！";
+                                show2 = "開啟偵測與防禦";
                                 myTimer.Tick += new EventHandler(SendPacket);
                                 myTimer.Enabled = true;
                                 myTimer.Interval = Freq;
-                                check++;
+                            }
+                            else
+                            {
+                                show1 = "目前 ARP 對應正確！";
+                                myTimer.Stop();
                             }
 
                         }

@@ -403,6 +403,7 @@
             this.attack_mac_textBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.attack_mac_textBox.Size = new System.Drawing.Size(287, 109);
             this.attack_mac_textBox.TabIndex = 7;
+            this.attack_mac_textBox.Text = "無";
             this.attack_mac_textBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // attack_ip_textBox
@@ -418,6 +419,7 @@
             this.attack_ip_textBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.attack_ip_textBox.Size = new System.Drawing.Size(287, 109);
             this.attack_ip_textBox.TabIndex = 6;
+            this.attack_ip_textBox.Text = "無";
             this.attack_ip_textBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // Form1
